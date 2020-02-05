@@ -13,7 +13,7 @@ class FileHandler:
 
     def next_frame(self):
         n_frame = self.frames[self.frame_counter]
-        if self.frame_counter < len(self.frames):
+        if self.frame_counter < len(self.frames)-1:
             self.frame_counter += 1
         return n_frame
 
