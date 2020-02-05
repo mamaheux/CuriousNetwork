@@ -72,21 +72,17 @@ class PlayerInterface(QWidget):
         self._update_image(path, tags)
 
     def _on_rewind_button_pressed(self):
-        print('a')
         self._player_mode = 'rewind'
         self._is_player_enabled = True
 
     def _on_rewind_button_released(self):
-        print('b')
         self._is_player_enabled = False
 
     def _on_play_button_pressed(self):
-        print('c')
         self._player_mode = 'play'
         self._is_player_enabled = True
 
     def _on_play_button_released(self):
-        print('d')
         self._is_player_enabled = False
 
     def _on_frame_timer_timeout(self):
