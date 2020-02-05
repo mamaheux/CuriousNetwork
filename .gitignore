@@ -130,3 +130,6 @@ dmypy.json
 
 database/
 .idea
+
+# Project specific files
+tools/labeling/test.csv
