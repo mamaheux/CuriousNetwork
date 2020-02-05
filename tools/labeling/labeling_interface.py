@@ -1,6 +1,8 @@
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QKeySequence
-from PySide2.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout
+from PySide2.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout, QFileDialog
+from IO_model import FileHandler
+import os
 
 class LabelingInterface(QWidget):
     def __init__(self):
@@ -8,6 +10,8 @@ class LabelingInterface(QWidget):
 
         self.setWindowTitle("CuriousNetwork - Labeling Interface")
         self._create_ui()
+
+        self.file_handler = FileHandler()
 
     def _create_ui(self):
         self._path_line_edit = QLineEdit()
@@ -56,16 +60,25 @@ class LabelingInterface(QWidget):
         self.setLayout(layout)
 
     def _on_browse_button_clicked(self):
-        print("browse")
+        dialog = QFileDialog()
+        dialog.setFileMode(QFileDialog.Directory)
+        directory = dialog.getExistingDirectory(self, 'Choose Frames Directory', os.curdir)
+        self.file_handler.set_frames_directory(directory)
+        self._path_line_edit.setText(directory)
+        return directory
 
     def _on_previous_button_clicked(self):
-        print("previous")
+        return self.file_handler.previous_frame()
 
     def _on_next_button_clicked(self):
-        print("next")
+        return self.file_handler.next_frame()
 
     def _on_clear_button_clicked(self):
         print("clear")
 
     def _on_save_button_clicked(self):
-        print("save")
+        annotated_frame_name = str.replace(self.file_handler.frames[self.file_handler.frame_counter],
+                                           '.jpg',
+                                           '_annotated.jpg')
+        self.file_handler.tags_to_file([0, 0, 0, 0, 0], os.defpath.join('./annotated/', annotated_frame_name))
+        print("File {} saved".format(annotated_frame_name))

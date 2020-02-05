@@ -4,9 +4,7 @@ import numpy as np
 
 class FileHandler:
 
-    def __init__(self, path):
-        if path == '':
-            raise IOError('A valid path must be given to instanciate a FileHandler object')
+    def __init__(self, path=os.curdir):
         self.directory = path
         self.frames = os.listdir(path)
         self.frame_counter = 0
@@ -15,17 +13,23 @@ class FileHandler:
         n_frame = self.frames[self.frame_counter]
         if self.frame_counter < len(self.frames)-1:
             self.frame_counter += 1
+        else:
+            self.frame_counter = 0
         return n_frame
 
     def previous_frame(self):
         p_frame = self.frames[self.frame_counter]
         if self.frame_counter > 0:
             self.frame_counter -= 1
+        else:
+            self.frame_counter = len(self.frames) - 1
         return p_frame
 
     def set_frames_directory(self, path):
         self.directory = path
         self.frames = os.listdir(self.directory)
+        self.frames.sort(key=str.lower)
+        print('Frames order:\n{}'.format(self.frames))
         self.frame_counter = 0
 
     def tags_to_file(self, annotated_matrix, path):

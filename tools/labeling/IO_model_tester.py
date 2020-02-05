@@ -2,6 +2,12 @@ from IO_model import FileHandler
 import numpy as np
 import os
 
+print('No Robustness: it will open any files, not just images (*.jpg, *.png, etc')
+model = FileHandler()
+print(model.next_frame())
+print(model.next_frame())
+
+
 model = FileHandler('/home/ggs22/Pictures')
 
 print(model.next_frame())
