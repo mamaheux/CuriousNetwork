@@ -58,7 +58,7 @@ class LabelingWidget(QGraphicsView):
         self._image_item.setPixmap(QPixmap(path))
 
     def clear(self):
-        self._tags = 0
+        self._tags[:, :] = 0
         self._update_tags()
 
     def get_tags(self):
@@ -66,7 +66,7 @@ class LabelingWidget(QGraphicsView):
 
     def set_tags(self, tags):
         if tags.shape[0] != LABELING_TAG_HEIGHT or tags.shape[1] != LABELING_TAG_WIDTH:
-            raise ValueError("Wrong tags shape")
+            raise ValueError('Wrong tags shape')
 
         self._tags = tags.copy()
         self._update_tags()
