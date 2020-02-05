@@ -4,6 +4,8 @@ from PySide2.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout, QHBo
 from IO_model import FileHandler
 import os
 
+from labeling_widget import LabelingWidget
+
 class LabelingInterface(QWidget):
     def __init__(self):
         super().__init__()
@@ -25,6 +27,8 @@ class LabelingInterface(QWidget):
         browse_layout = QHBoxLayout()
         browse_layout.addWidget(self._path_line_edit)
         browse_layout.addWidget(self._browse_button)
+
+        self._labeling_widget = LabelingWidget()
 
         self._previous_button = QPushButton("Previous")
         self._previous_button.setMaximumWidth(150)
@@ -56,6 +60,7 @@ class LabelingInterface(QWidget):
 
         layout = QVBoxLayout()
         layout.addLayout(browse_layout)
+        layout.addWidget(self._labeling_widget)
         layout.addLayout(action_layout)
         self.setLayout(layout)
 
