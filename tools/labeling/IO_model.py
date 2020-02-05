@@ -1,4 +1,5 @@
 import os
+import glob
 import numpy as np
 
 
@@ -6,32 +7,35 @@ class FileHandler:
 
     def __init__(self, path=os.curdir):
         self.directory = path
-        self.frames = os.listdir(path)
+        self.frames = glob.glob(os.path.join(path, '*.jpg'))
         self.frame_counter = 0
+        self.current_frame = ''
+        self.current_annonated_frame = ''
 
     def next_frame(self):
-        n_frame = self.frames[self.frame_counter]
+        self.current_frame = self.frames[self.frame_counter]
+        self.current_annonated_frame = glob.glob(os.path.join(self.current_frame, '*.txt'))
         if self.frame_counter < len(self.frames)-1:
             self.frame_counter += 1
         else:
             self.frame_counter = 0
-        return n_frame
+        return os.path.join(self.directory, self.current_frame), self.current_annonated_frame
 
     def previous_frame(self):
-        p_frame = self.frames[self.frame_counter]
+        self.current_frame = self.frames[self.frame_counter]
+        self.current_annonated_frame = glob.glob(os.path.join(self.current_frame, '*.txt'))
         if self.frame_counter > 0:
             self.frame_counter -= 1
         else:
             self.frame_counter = len(self.frames) - 1
-        return p_frame
+        return os.path.join(self.directory, self.current_frame), self.current_annonated_frame
 
     def set_frames_directory(self, path):
         self.directory = path
-        self.frames = os.listdir(self.directory)
+        self.frames = glob.glob(os.path.join(path, '*.jpg'))
         self.frames.sort(key=str.lower)
-        print('Frames order:\n{}'.format(self.frames))
         self.frame_counter = 0
 
-    def tags_to_file(self, annotated_matrix, path):
-        print('Annotated matrix is: {}'.format(annotated_matrix))
-        np.savetxt(path, annotated_matrix, delimiter=',', fmt='%f')
+    def tags_to_file(self, annotated_matrix):
+        file_name = os.path.join(self.directory, str.replace(self.current_frame, '.jpg', '.txt'))
+        np.savetxt(file_name, annotated_matrix, delimiter=',', fmt='%f')

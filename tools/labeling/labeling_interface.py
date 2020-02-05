@@ -73,10 +73,10 @@ class LabelingInterface(QWidget):
         return directory
 
     def _on_previous_button_clicked(self):
-        return self.file_handler.previous_frame()
+        print(self.file_handler.previous_frame())
 
     def _on_next_button_clicked(self):
-        return self.file_handler.next_frame()
+        print(self.file_handler.next_frame())
 
     def _on_clear_button_clicked(self):
         print("clear")
@@ -85,5 +85,5 @@ class LabelingInterface(QWidget):
         annotated_frame_name = str.replace(self.file_handler.frames[self.file_handler.frame_counter],
                                            '.jpg',
                                            '_annotated.jpg')
-        self.file_handler.tags_to_file([0, 0, 0, 0, 0], os.defpath.join('./annotated/', annotated_frame_name))
+        self.file_handler.tags_to_file([0, 0, 0, 0, 0], os.path.join('./annotated/', annotated_frame_name))
         print("File {} saved".format(annotated_frame_name))
