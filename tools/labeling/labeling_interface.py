@@ -13,7 +13,7 @@ class LabelingInterface(QWidget):
         self.setWindowTitle("CuriousNetwork - Labeling Interface")
         self._create_ui()
 
-        self.file_handler = FileHandler()
+        self._file_handler = FileHandler()
 
     def _create_ui(self):
         self._path_line_edit = QLineEdit()
@@ -68,22 +68,32 @@ class LabelingInterface(QWidget):
         dialog = QFileDialog()
         dialog.setFileMode(QFileDialog.Directory)
         directory = dialog.getExistingDirectory(self, 'Choose Frames Directory', os.curdir)
-        self.file_handler.set_frames_directory(directory)
+        self._file_handler.set_frames_directory(directory)
         self._path_line_edit.setText(directory)
-        return directory
+
+        self._on_next_button_clicked()
 
     def _on_previous_button_clicked(self):
-        print(self.file_handler.previous_frame())
+        self._on_save_button_clicked()
+
+        path, tags = self._file_handler.previous_frame()
+        self._labeling_widget.set_image(path)
+        if tags is not None:
+            self._labeling_widget.set_tags(tags)
 
     def _on_next_button_clicked(self):
-        print(self.file_handler.next_frame())
+        self._on_save_button_clicked()
+
+        path, tags = self._file_handler.next_frame()
+        self._labeling_widget.set_image(path)
+        if tags is not None:
+            self._labeling_widget.set_tags(tags)
 
     def _on_clear_button_clicked(self):
-        print("clear")
+        self._labeling_widget.clear()
 
     def _on_save_button_clicked(self):
-        annotated_frame_name = str.replace(self.file_handler.frames[self.file_handler.frame_counter],
-                                           '.jpg',
-                                           '_annotated.jpg')
-        self.file_handler.tags_to_file([0, 0, 0, 0, 0], os.path.join('./annotated/', annotated_frame_name))
+
+        annotated_frame_name = str.replace(self._file_handler.frames[self._file_handler.frame_counter], '.jpg', '.txt')
+        self._file_handler.tags_to_file(self._labeling_widget.get_tags(), annotated_frame_name)
         print("File {} saved".format(annotated_frame_name))

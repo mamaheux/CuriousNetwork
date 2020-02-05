@@ -23,8 +23,6 @@ class LabelingWidget(QGraphicsView):
         self._create_default_scene()
 
         self.setScene(self._scene)
-        self._image_item.setPixmap(
-            QPixmap("/home/marc-antoine/Bureau/IFT725/CuriousNetwork/database/jpg/corridor_fresco/0-1.jpg"))
 
     def _create_default_scene(self):
         self._scene = QGraphicsScene()
@@ -65,6 +63,13 @@ class LabelingWidget(QGraphicsView):
 
     def get_tags(self):
         return self._tags.copy()
+
+    def set_tags(self, tags):
+        if tags.shape[0] != LABELING_TAG_HEIGHT or tags.shape[1] != LABELING_TAG_WIDTH:
+            raise ValueError("Wrong tags shape")
+
+        self._tags = tags.copy()
+        self._update_tags()
 
     def resizeEvent(self, event):
         super().resizeEvent(event)
