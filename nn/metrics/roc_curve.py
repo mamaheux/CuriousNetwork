@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
-from database.database_loader import DatabaseLoader
+from curious_dataset import CuriousDataset
 
 class RocCurve:
     def __init__(self, database_folder_path, model, thresholds):
-        self._database_loader = DatabaseLoader(database_folder_path)
+        self._dataset = CuriousDataset(database_folder_path)
         self._model = model
         self._thresholds = thresholds
 
@@ -20,15 +20,14 @@ class RocCurve:
             true_positive_counts[threshold] = 0
             false_positive_counts[threshold] = 0
 
-        for i in range(self._database_loader.get_frames_size()):
-            frame = self._database_loader.get_frame(i)
-            annotation = self._database_loader.get_frame_annotation(i)
+        for i in range(len(self._dataset)):
+            image = self._dataset.get_image(i)
+            annotation = self._dataset.get_frame_annotation(i)
 
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            #error = self._model.predict(frame)
-            error = np.random.rand(annotation.shape[0],annotation.shape[1]) #TODO remove
+            error = self._model.forward(image).numpy()
 
             for threshold in self._thresholds:
                 predicted_roi = error > threshold

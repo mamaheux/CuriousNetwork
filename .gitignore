@@ -128,7 +128,7 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-database/
+dataset/
 .idea
 
 # Project specific files

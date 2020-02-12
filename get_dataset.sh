@@ -1,7 +1,7 @@
 #!/bin/bash
 
-mkdir database
+mkdir dataset
 wget https://curiousnetworkdatabase.blob.core.windows.net/database/jpg.zip
 unzip jpg.zip
-mv jpg/ database/jpg/
+mv jpg/ dataset/jpg/
 rm jpg.zip

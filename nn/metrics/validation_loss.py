@@ -1,21 +1,19 @@
 import numpy as np
 
-from database.database_loader import DatabaseLoader
+from curious_dataset import CuriousDataset
 
 class ValidationLoss:
     def __init__(self, database_folder_path, model):
-        self._database_loader = DatabaseLoader(database_folder_path)
+        self._dataset = CuriousDataset(database_folder_path)
         self._model = model
 
-    def validate_loss(self):
+    def calculate(self):
         J = 0
-        for i in range(self._database_loader.get_frames_size()):
-            frame = self._database_loader.get_frame(i)
-            annotation = self._database_loader.get_frame_annotation(i)
+        for i in range(len(self._dataset)):
+            image = self._dataset.get_image(i)
+            annotation = self._dataset.get_frame_annotation(i)
 
-            # error = self._model.predict(frame)
-            error = np.zeros(annotation.shape)  # TODO remove
-
+            error = self._model.forward(image).numpy()
             J += np.sum(annotation * error - (1 - annotation)*error)
 
-        return J / self._database_loader.get_frames_size()
+        return J / len(self._dataset)
