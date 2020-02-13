@@ -35,14 +35,16 @@ class RocCurve:
                 true_positive_counts[threshold] += np.sum(annotation * predicted_roi)
                 false_positive_counts[threshold] += np.sum((np.ones(annotation.shape) - annotation) * predicted_roi)
 
-        rates = np.zeros((2, len(self._thresholds)))
+        rates = np.zeros((3, len(self._thresholds)))
+        rates[2, :] = self._thresholds
+
         for i in range(len(self._thresholds)):
             rates[1, i] = true_positive_counts[self._thresholds[i]] / positive_count
             rates[0, i] = false_positive_counts[self._thresholds[i]] / negative_count
 
         sorted_indexes = np.argsort(rates[0, :])
-        rates[0, :] = rates[0, sorted_indexes]
-        rates[1, :] = rates[1, sorted_indexes]
+        for i in range(rates.shape[0]):
+            rates[i, :] = rates[i, sorted_indexes]
 
         return rates
 
