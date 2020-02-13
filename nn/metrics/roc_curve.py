@@ -27,7 +27,8 @@ class RocCurve:
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            error = self._model.forward(image).numpy()
+            error = self._model.forward(image.unsqueeze(0)).detach().numpy()
+            error = np.sqrt(error)
 
             for threshold in self._thresholds:
                 predicted_roi = error > threshold
@@ -47,7 +48,7 @@ class RocCurve:
 
     def plot(self):
         rates = self.calculate()
-        plt.plot(rates[0, :],rates[0, :], label='rates')
+        plt.plot(rates[0, :],rates[1, :], label='rates')
         plt.plot(np.array([0, 1]), np.array([0, 1]),'--', label='rates')
         plt.xlabel('False positive rate')
         plt.ylabel('True positive rate')

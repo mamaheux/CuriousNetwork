@@ -13,7 +13,9 @@ class ValidationLoss:
             image = self._dataset.get_image(i)
             annotation = self._dataset.get_frame_annotation(i)
 
-            error = self._model.forward(image).numpy()
+            error = self._model.forward(image.unsqueeze(0)).detach().numpy()
+            error = np.sqrt(error)
+
             J += np.sum(annotation * error - (1 - annotation)*error)
 
         return J / len(self._dataset)
