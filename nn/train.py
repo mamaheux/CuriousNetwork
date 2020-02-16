@@ -10,9 +10,9 @@ import curious_dataset
 from metrics.validation_loss import ValidationLoss
 from metrics.roc_curve import RocCurve
 from models.cnn_autoencoder import CnnAutoencoder
+from models.small_cnn import SmallCnnWithAutoencoder
 
 BATCH_SIZE = 20
-roc_curve_thresholds = np.linspace(0, 3, num=1000)
 
 def main():
     parser = argparse.ArgumentParser(description='Train Curious Network')
@@ -45,7 +45,9 @@ def main():
 
 def train(use_gpu, train_path, val_path, test_path, output_path, name, model_type, hyperparameters):
     dataset_loader = curious_dataset.create_dataset_loader(train_path, BATCH_SIZE)
-    model = create_model(model_type, hyperparameters)
+    model, roc_curve_thresholds = create_model(model_type, hyperparameters)
+
+    os.makedirs(output_path, exist_ok=True)
 
     if torch.cuda.is_available() and use_gpu:
         model = model.cuda()
@@ -59,6 +61,7 @@ def train(use_gpu, train_path, val_path, test_path, output_path, name, model_typ
         print('epoch [{}/{}]'.format(epoch + 1, hyperparameters['epoch_count']))
         train_loss = 0.0
 
+        model.train()
         for idx, image in enumerate(Bar(dataset_loader)):
             if torch.cuda.is_available() and use_gpu:
                 image = Variable(image).cuda()
@@ -66,7 +69,10 @@ def train(use_gpu, train_path, val_path, test_path, output_path, name, model_typ
                 image = Variable(image)
 
             output = model(image)
-            loss = criterion(output, torch.zeros(output.size()))
+
+            zeros = torch.zeros(output.size()).cuda() if torch.cuda.is_available() and use_gpu else torch.zeros(output.size())
+            loss = criterion(output, zeros)
+
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -74,26 +80,28 @@ def train(use_gpu, train_path, val_path, test_path, output_path, name, model_typ
             train_loss += loss.item()
 
         train_loss /= len(dataset_loader)
-        print('training loss: {:.4f}'.format(train_loss))
+        print('training loss: {}'.format(train_loss))
 
-    model.eval()
-    validation_loss = ValidationLoss(val_path, model).calculate()
-    roc_curve_rates = RocCurve(test_path, model, roc_curve_thresholds).calculate()
+        model.eval()
+        validation_loss = ValidationLoss(val_path, model).calculate()
+        print('validation loss: {}'.format(validation_loss))
 
-    print('validation loss: {:.4f}'.format(validation_loss))
+        roc_curve_rates = RocCurve(test_path, model, roc_curve_thresholds).calculate()
 
-    os.makedirs(output_path, exist_ok=True)
-    torch.save(model.state_dict(), os.path.join(output_path, name + '.pth'))
-    np.savetxt(os.path.join(output_path, name + '_val.txt'), np.array([validation_loss]), delimiter=',', fmt='%f')
-    np.savetxt(os.path.join(output_path, name + '_roc.txt'), roc_curve_rates, delimiter=',', fmt='%f')
+        name_with_epoch = name + '_epoch_{}'.format(epoch)
+        torch.save(model.state_dict(), os.path.join(output_path, name_with_epoch + '.pth'))
+        np.savetxt(os.path.join(output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]), delimiter=',', fmt='%f')
+        np.savetxt(os.path.join(output_path, name_with_epoch + '_roc.txt'), roc_curve_rates, delimiter=',', fmt='%f')
 
 def create_model(type, hyperparameters):
     if type == 'cnn_autoencoder':
-        return CnnAutoencoder()
+        roc_curve_thresholds = np.linspace(0, 1, num=1000)
+        return CnnAutoencoder(), roc_curve_thresholds
     elif type == 'backend_cnn':
         raise NotImplementedError()
     elif type == 'small_cnn':
-        raise NotImplementedError()
+        roc_curve_thresholds = np.linspace(0, 10, num=10000)
+        return SmallCnnWithAutoencoder(), roc_curve_thresholds
     else:
         raise ValueError('Invalid model type')
 
