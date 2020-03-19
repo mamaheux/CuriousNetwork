@@ -25,12 +25,15 @@ class CnnAutoencoder(torch.nn.Module):
 
         self._decoder = torch.nn.Sequential(
             torch.nn.ConvTranspose2d(128, 64, 3, stride=2, padding=0),
+            torch.nn.ReLU(True),
             torch.nn.Conv2d(64, 32, 3, stride=1, padding=1),
             torch.nn.ReLU(True),
             torch.nn.ConvTranspose2d(32, 16, 3, stride=3, padding=1),
+            torch.nn.ReLU(True),
             torch.nn.Conv2d(16, 8, 3, stride=1, padding=1),
             torch.nn.ReLU(True),
             torch.nn.ConvTranspose2d(8, 4, 3, stride=5, padding=1),
+            torch.nn.ReLU(True),
             torch.nn.Conv2d(4, 3, 3, stride=1, padding=0),
             torch.nn.Sigmoid()
         )
@@ -38,8 +41,6 @@ class CnnAutoencoder(torch.nn.Module):
         self._average_pool = torch.nn.AvgPool2d(30)
 
     def forward(self, input):
-        input_channel_count = input.size()[1]
-
         x = self._encoder(input)
         x = self._decoder(x)
         x = F.interpolate(x, size=(input.size()[2], input.size()[3]), mode='bilinear')
@@ -47,7 +48,6 @@ class CnnAutoencoder(torch.nn.Module):
         error = x - input
         error = torch.pow(error, 2)
         error = self._average_pool(error)
-        error = torch.sum(error, dim=1)
-        error /= input_channel_count
+        error = torch.mean(error, dim=1)
 
         return error
