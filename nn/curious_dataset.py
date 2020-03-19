@@ -6,8 +6,10 @@ import torch
 from torch.utils.data import Dataset, DataLoader
 
 from skimage import io
+from skimage import transform
 
-MAX_FRAME_COUNT = np.inf
+MAX_FRAME_COUNT = 1000000000
+OUTPUT_IMAGE_SIZE = (270, 480)
 
 class CuriousDataset(Dataset):
     def __init__(self, folder_path, transform=None):
@@ -17,8 +19,7 @@ class CuriousDataset(Dataset):
         self._transform = transform
 
     def __len__(self):
-        # return len(self._images)
-        return min(25,len(self._images))
+        return len(self._images)
 
     def __getitem__(self, index):
         image = self._get_image(index)
@@ -31,6 +32,7 @@ class CuriousDataset(Dataset):
     def _get_image(self, index):
         int8_image = io.imread(os.path.join(self._folder_path, self._images[index]))
         float_image = int8_image.astype(np.float32)
+        float_image = transform.resize(float_image, OUTPUT_IMAGE_SIZE)
         float_image = np.moveaxis(float_image, -1, 0)
         return torch.from_numpy(float_image / 255)
 
