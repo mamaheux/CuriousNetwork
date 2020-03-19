@@ -7,21 +7,27 @@ from torch.utils.data import Dataset, DataLoader
 
 from skimage import io
 
-MAX_FRAME_COUNT = 1000000000
+MAX_FRAME_COUNT = np.inf
 
 class CuriousDataset(Dataset):
-    def __init__(self, folder_path):
+    def __init__(self, folder_path, transform=None):
         self._folder_path = folder_path
         self._images = glob.glob(os.path.join(self._folder_path, '*.jpg'))
         self._images.sort(key=self._filename_sort_key)
+        self._transform = transform
 
     def __len__(self):
         return len(self._images)
 
     def __getitem__(self, index):
-        return self.get_image(index)
+        image = self._get_image(index)
+        annotation = self._get_frame_annotation(index)
+        if self._transform is None:
+            return image, annotation
+        else:
+            return  self._transform((image, annotation))
 
-    def get_image(self, index):
+    def _get_image(self, index):
         int8_image = io.imread(os.path.join(self._folder_path, self._images[index]))
         float_image = int8_image.astype(np.float32)
         float_image = np.moveaxis(float_image, -1, 0)
@@ -29,7 +35,7 @@ class CuriousDataset(Dataset):
         max = np.max(float_image)
         return torch.from_numpy((float_image - min) / (max - min))
 
-    def get_frame_annotation(self, index):
+    def _get_frame_annotation(self, index):
         self._current_annonated_frame = None
         path = os.path.join(self._folder_path, str.replace(self._images[index], '.jpg', '.txt'))
         if os.path.exists(path):
