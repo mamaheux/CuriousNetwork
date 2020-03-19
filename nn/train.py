@@ -31,6 +31,15 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
+    # Parameters of the CNN autoencoder
+    parser.add_argument('--cnn_autoencoder_starting_feature_map',
+                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        default=4)
+    parser.add_argument('--cnn_autoencoder_growth_factor',
+                        type=int, help='Choose the basis of the coefficient by which the feature' 
+                                       'maps are goind to be multiplied from a layer to the next', default=2)
+    parser.add_argument('--cnn_autoencoder_kernel_size', type=int, help='Choose the starting kernel size', default=3)
+
     args = parser.parse_args()
     train(args)
 
@@ -92,7 +101,9 @@ def train(args):
 def create_model(type, hyperparameters):
     if type == 'cnn_autoencoder':
         roc_curve_thresholds = np.linspace(0, 1, num=1000)
-        return CnnAutoencoder(), roc_curve_thresholds
+        return CnnAutoencoder(ini_feature_maps=hyperparameters.cnn_autoencoder_starting_feature_map,
+                              feature_maps_growth_factor=hyperparameters.cnn_autoencoder_growth_factor,
+                              kernel_size=hyperparameters.cnn_autoencoder_kernel_size),roc_curve_thresholds
     elif type == 'backend_cnn':
         raise NotImplementedError()
     elif type == 'small_cnn':
