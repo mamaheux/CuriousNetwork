@@ -31,6 +31,11 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
+    # small_cnn arguments
+    parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)
+    parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
+    parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
+
     args = parser.parse_args()
     train(args)
 
@@ -97,7 +102,9 @@ def create_model(type, hyperparameters):
         raise NotImplementedError()
     elif type == 'small_cnn':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
-        return SmallCnnWithAutoencoder(), roc_curve_thresholds
+        return SmallCnnWithAutoencoder(kernel_size=hyperparameters.small_cnn_kernel_size,
+                                       first_output_channels=hyperparameters.small_cnn_first_output_channels,
+                                       growth_rate=hyperparameters.small_cnn_growth_rate), roc_curve_thresholds
     else:
         raise ValueError('Invalid model type')
 
