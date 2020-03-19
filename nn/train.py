@@ -10,6 +10,7 @@ import curious_dataset
 import data_augmentation_transform
 from metrics.validation_loss import ValidationLoss
 from metrics.roc_curve import RocCurve
+from metrics.model_execution_time import ModelExecutionTime
 from models.cnn_autoencoder import CnnAutoencoder
 from models.small_cnn import SmallCnnWithAutoencoder
 
@@ -83,6 +84,10 @@ def train(args):
         torch.save(model.state_dict(), os.path.join(args.output_path, name_with_epoch + '.pth'))
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]), delimiter=',', fmt='%f')
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_roc.txt'), roc_curve_rates, delimiter=',', fmt='%f')
+
+    model_execution_time = ModelExecutionTime(args.test_path, model)
+    with open(os.path.join(args.output_path, args.name + '_execution_time.txt'), "w") as text_file:
+        text_file.write("Forward: {} seconds\nBackward: {} seconds".format(*model_execution_time.calculate()))
 
 def create_model(type, hyperparameters):
     if type == 'cnn_autoencoder':
