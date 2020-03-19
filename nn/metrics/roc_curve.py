@@ -26,7 +26,7 @@ class RocCurve:
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            error = self._model.forward(image.unsqueeze(0)).detach().numpy()
+            error = self._model(image.unsqueeze(0)).detach().numpy()
             error = np.sqrt(error)
 
             for threshold in self._thresholds:
