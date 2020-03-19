@@ -21,8 +21,7 @@ class RocCurve:
             false_positive_counts[threshold] = 0
 
         for i in range(len(self._dataset)):
-            image = self._dataset.get_image(i)
-            annotation = self._dataset.get_frame_annotation(i)
+            image, annotation = self._dataset[i]
 
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)

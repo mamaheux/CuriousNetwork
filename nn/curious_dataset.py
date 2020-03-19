@@ -12,33 +12,37 @@ MAX_FRAME_COUNT = 1000000000
 OUTPUT_IMAGE_SIZE = (270, 480)
 
 class CuriousDataset(Dataset):
-    def __init__(self, folder_path):
+    def __init__(self, folder_path, transform=None):
         self._folder_path = folder_path
         self._images = glob.glob(os.path.join(self._folder_path, '*.jpg'))
         self._images.sort(key=self._filename_sort_key)
+        self._transform = transform
 
     def __len__(self):
         return len(self._images)
 
     def __getitem__(self, index):
-        return self.get_image(index)
+        image = self._get_image(index)
+        annotation = self._get_frame_annotation(index)
+        if self._transform is not None:
+            image, annotation = self._transform((image, annotation))
+        image = (image - image.min()) / (image.max() - image.min())
+        return image, annotation
 
-    def get_image(self, index):
+    def _get_image(self, index):
         int8_image = io.imread(os.path.join(self._folder_path, self._images[index]))
         float_image = int8_image.astype(np.float32)
         float_image = transform.resize(float_image, OUTPUT_IMAGE_SIZE)
         float_image = np.moveaxis(float_image, -1, 0)
-        min = np.min(float_image)
-        max = np.max(float_image)
-        return torch.from_numpy((float_image - min) / (max - min))
+        return torch.from_numpy(float_image / 255)
 
-    def get_frame_annotation(self, index):
+    def _get_frame_annotation(self, index):
         self._current_annonated_frame = None
         path = os.path.join(self._folder_path, str.replace(self._images[index], '.jpg', '.txt'))
         if os.path.exists(path):
             return np.loadtxt(path, delimiter=',').astype(int)
         else:
-            return None
+            return np.zeros((9,16), dtype=int)
 
     def _filename_sort_key(self, x):
         x = str.replace(x, '.jpg', '')
@@ -47,5 +51,5 @@ class CuriousDataset(Dataset):
 
         return MAX_FRAME_COUNT * int(x[0]) + int(x[1])
 
-def create_dataset_loader(folder_path, batch_size):
-    return DataLoader(CuriousDataset(folder_path), batch_size=batch_size, shuffle=True, num_workers=4)
+def create_dataset_loader(folder_path, batch_size, transform=None):
+    return DataLoader(CuriousDataset(folder_path, transform=transform), batch_size=batch_size, shuffle=True, num_workers=4)
