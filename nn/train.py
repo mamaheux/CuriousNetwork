@@ -12,7 +12,7 @@ from metrics.roc_curve import RocCurve
 from models.cnn_autoencoder import CnnAutoencoder
 from models.small_cnn import SmallCnnWithAutoencoder
 
-BATCH_SIZE = 20
+BATCH_SIZE = 40
 
 def main():
     parser = argparse.ArgumentParser(description='Train Curious Network')
@@ -52,7 +52,6 @@ def train(use_gpu, train_path, val_path, test_path, output_path, name, model_typ
     if torch.cuda.is_available() and use_gpu:
         model = model.cuda()
 
-    criterion = torch.nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(),
                                  lr=hyperparameters['learning_rate'],
                                  weight_decay=hyperparameters['weight_decay'])
@@ -69,9 +68,7 @@ def train(use_gpu, train_path, val_path, test_path, output_path, name, model_typ
                 image = Variable(image)
 
             output = model(image)
-
-            zeros = torch.zeros(output.size()).cuda() if torch.cuda.is_available() and use_gpu else torch.zeros(output.size())
-            loss = criterion(output, zeros)
+            loss = output.sum()
 
             optimizer.zero_grad()
             loss.backward()
