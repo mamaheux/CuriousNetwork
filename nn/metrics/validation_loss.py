@@ -10,8 +10,7 @@ class ValidationLoss:
     def calculate(self):
         J = 0
         for i in range(len(self._dataset)):
-            image = self._dataset.get_image(i)
-            annotation = self._dataset.get_frame_annotation(i)
+            image, annotation = self._dataset[i]
 
             error = self._model.forward(image.unsqueeze(0)).detach().numpy()
             error = np.sqrt(error)

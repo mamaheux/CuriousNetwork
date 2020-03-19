@@ -17,17 +17,19 @@ class DataAugmentationTransform(object):
         self._prob_flip = prob_flip
 
     def __call__(self, input):
+
         image, annotation = input
-        image = self._color_jitter(image)
+
+        image = F.to_tensor(self._color_jitter(F.to_pil_image(image)))
         image, annotation = self._add_noise((image, annotation))
         image, annotation = self._flip((image, annotation))
         return image, annotation
 
     def _flip(self, input):
         image, annotation = input
-        if self.prob_flip > np.random.rand(1)[0]:
+        if self._prob_flip > np.random.rand(1)[0]:
             image = image.flip(2)
-            annotation = annotation.flip(2)
+            annotation = np.flip(annotation, axis=1).copy()
         return image, annotation
 
     def _add_noise(self, input):
