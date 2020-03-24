@@ -4,15 +4,21 @@ import numpy as np
 
 import torch
 from torch.autograd import Variable
+
+import torchvision.transforms as transforms
+
 from barbar import Bar
 
-import curious_dataset
+from curious_dataset import create_dataset_loader
 import data_augmentation_transform
+
 from learning_curves import LearningCurves
 from metrics.validation_loss import ValidationLoss
 from metrics.roc_curve import RocCurve
 from metrics.model_execution_time import ModelExecutionTime
+
 from models.cnn_autoencoder import CnnAutoencoder
+from models.vgg16_backend_autoencoder import Vgg16BackendAutoencoder
 from models.small_cnn import SmallCnnWithAutoencoder
 
 def main():
@@ -24,7 +30,7 @@ def main():
     parser.add_argument('-o', '--output_path', type=str, help='Choose the output path', required=True)
     parser.add_argument('-n', '--name', type=str, help='Choose the model name', required=True)
 
-    parser.add_argument('-t', '--type', choices=['cnn_autoencoder', 'backend_cnn', 'small_cnn'],
+    parser.add_argument('-t', '--type', choices=['cnn_autoencoder', 'vgg16_backend_autoencoder', 'small_cnn'],
                         help='Choose the network type', required=True)
     parser.add_argument('-s', '--batch_size', type=int, help='Set the batch size for the training', default=20)
     parser.add_argument('-d', '--data_augmentation', action='store_true', help='Use data augmentation or not')
@@ -54,7 +60,9 @@ def train(args):
         transform = data_augmentation_transform.DataAugmentationTransform()
     else:
         transform = None
-    dataset_loader = curious_dataset.create_dataset_loader(args.train_path, args.batch_size, transform=transform)
+    dataset_loader = create_dataset_loader(args.train_path, args.batch_size, transform=transform,
+                                           normalization=transforms.Normalize(mean=[0.485, 0.456, 0.406],
+                                                                              std=[0.229, 0.224, 0.225]))
     model, roc_curve_thresholds = create_model(args.type, args)
 
     os.makedirs(args.output_path, exist_ok=True)
@@ -113,8 +121,9 @@ def create_model(type, hyperparameters):
     if type == 'cnn_autoencoder':
         roc_curve_thresholds = np.linspace(0, 1, num=1000)
         return CnnAutoencoder(), roc_curve_thresholds
-    elif type == 'backend_cnn':
-        raise NotImplementedError()
+    elif type == 'vgg16_backend_autoencoder':
+        roc_curve_thresholds = np.linspace(0, 10, num=10000)
+        return Vgg16BackendAutoencoder(), roc_curve_thresholds
     elif type == 'small_cnn':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
         return SmallCnnWithAutoencoder(), roc_curve_thresholds

@@ -63,14 +63,12 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
 
     def forward(self, input):
         features = self._cnn(input)
-        feature_count = features.size()[1]
 
         x = self._encoder(features)
         x = self._decoder(x)
 
         error = x - features
         error = torch.pow(error, 2)
-        error = torch.sum(error, dim=1)
-        error /= feature_count
+        error = torch.mean(error, dim=1)
 
         return error
