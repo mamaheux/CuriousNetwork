@@ -8,6 +8,7 @@ from barbar import Bar
 
 import curious_dataset
 import data_augmentation_transform
+from learning_curves import LearningCurves
 from metrics.validation_loss import ValidationLoss
 from metrics.roc_curve import RocCurve
 from metrics.model_execution_time import ModelExecutionTime
@@ -65,6 +66,7 @@ def train(args):
                                  lr=args.learning_rate,
                                  weight_decay=args.weight_decay)
 
+    learning_curves = LearningCurves()
     for epoch in range(args.epoch_count):
         print('epoch [{}/{}]'.format(epoch + 1, args.epoch_count))
         train_loss = 0.0
@@ -86,10 +88,12 @@ def train(args):
             train_loss += loss.item()
 
         train_loss /= len(dataset_loader)
+        learning_curves.add_training_loss_value(train_loss)
         print('training loss: {}'.format(train_loss))
 
         model.eval()
         validation_loss = ValidationLoss(args.val_path, model).calculate()
+        learning_curves.add_validation_loss_value(validation_loss)
         print('validation loss: {}'.format(validation_loss))
 
         roc_curve_rates = RocCurve(args.test_path, model, roc_curve_thresholds).calculate()
@@ -98,6 +102,8 @@ def train(args):
         torch.save(model.state_dict(), os.path.join(args.output_path, name_with_epoch + '.pth'))
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]), delimiter=',', fmt='%f')
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_roc.txt'), roc_curve_rates, delimiter=',', fmt='%f')
+
+    learning_curves.save_figure(os.path.join(args.output_path, args.name + '_learning_curves.png'))
 
     model_execution_time = ModelExecutionTime(args.test_path, model)
     with open(os.path.join(args.output_path, args.name + '_execution_time.txt'), "w") as text_file:
