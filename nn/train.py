@@ -13,6 +13,7 @@ from metrics.roc_curve import RocCurve
 from metrics.model_execution_time import ModelExecutionTime
 from models.cnn_autoencoder import CnnAutoencoder
 from models.small_cnn import SmallCnnWithAutoencoder
+from models.small_cnn_dense_blocks import SmallCnnWithAutoencoderDenseBlocks
 
 def main():
     parser = argparse.ArgumentParser(description='Train Curious Network')
@@ -23,7 +24,7 @@ def main():
     parser.add_argument('-o', '--output_path', type=str, help='Choose the output path', required=True)
     parser.add_argument('-n', '--name', type=str, help='Choose the model name', required=True)
 
-    parser.add_argument('-t', '--type', choices=['cnn_autoencoder', 'backend_cnn', 'small_cnn'],
+    parser.add_argument('-t', '--type', choices=['cnn_autoencoder', 'small_cnn_dense_blocks',  'backend_cnn', 'small_cnn'],
                         help='Choose the network type', required=True)
     parser.add_argument('-s', '--batch_size', type=int, help='Set the batch size for the training', default=20)
     parser.add_argument('-d', '--data_augmentation', action='store_true', help='Use data augmentation or not')
@@ -112,6 +113,9 @@ def create_model(type, hyperparameters):
     elif type == 'small_cnn':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
         return SmallCnnWithAutoencoder(), roc_curve_thresholds
+    elif type == 'small_cnn_dense_blocks':
+        roc_curve_thresholds = np.linspace(0, 10, num=10000)
+        return SmallCnnWithAutoencoderDenseBlocks(), roc_curve_thresholds
     else:
         raise ValueError('Invalid model type')
 

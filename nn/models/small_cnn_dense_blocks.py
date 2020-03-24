@@ -3,35 +3,33 @@ import torch.nn as nn
 
 from nn.models.CNNBlocks import DenseBlock
 
-class SmallCnnWithAutoencoder(torch.nn.Module):
+class SmallCnnWithAutoencoderDenseBlocks(torch.nn.Module):
     def __init__(self, kernel_size=3, first_output_channels=8, growth_rate=2):
-        super(SmallCnnWithAutoencoder, self).__init__()
+        super(SmallCnnWithAutoencoderDenseBlocks, self).__init__()
         if kernel_size % 2 == 0:
             raise ValueError('Invalid kernel size')
 
         conv_padding = kernel_size // 2
-        self._cnn = torch.nn.Sequedntial(
-            DenseBlock(2, first_output_channels, growth_rate),
+        self._cnn = torch.nn.Sequential(
+            DenseBlock(2, 3, growth_rate),
 
-            torch.nn.ReLU(True),
-            DenseBlock(4, first_output_channels, growth_rate),
+            DenseBlock(2, 3 + growth_rate * 2, growth_rate),
+            torch.nn.MaxPool2d(5, stride=5),
 
-            torch.nn.ReLU(True),
-            DenseBlock(9, first_output_channels, growth_rate),
+            DenseBlock(2, 3 + growth_rate * 4, growth_rate),
 
-            torch.nn.ReLU(True),
-            DenseBlock(2, first_output_channels, growth_rate),
+            DenseBlock(2, 3 + growth_rate * 6, growth_rate),
+            torch.nn.MaxPool2d(3, stride=3),
 
-            torch.nn.ReLU(True),
-            DenseBlock(2, first_output_channels, growth_rate),
+            DenseBlock(2, 3 + growth_rate * 8, growth_rate),
 
-            torch.nn.ReLU(True),
-            DenseBlock(2, first_output_channels, growth_rate),
-            torch.nn.ReLU(True)
+            DenseBlock(2, 3 + growth_rate * 10, growth_rate),
+            torch.nn.MaxPool2d(2, stride=2),
+            torch.nn.BatchNorm2d(3 + growth_rate * 12)
 
         )
 
-        cnn_output_channels = first_output_channels * growth_rate ** 5
+        cnn_output_channels = 3 + growth_rate * 12
         self._encoder = torch.nn.Sequential(
             torch.nn.Conv2d(cnn_output_channels, cnn_output_channels // 2, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
@@ -55,14 +53,12 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
 
     def forward(self, input):
         features = self._cnn(input)
-        feature_count = features.size()[1]
 
         x = self._encoder(features)
         x = self._decoder(x)
 
         error = x - features
         error = torch.pow(error, 2)
-        error = torch.sum(error, dim=1)
-        error /= feature_count
+        error = torch.mean(error, dim=1)
 
         return error

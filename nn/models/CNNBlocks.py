@@ -20,6 +20,9 @@ class DenseBlock(nn.Module):
             self.bns.append(nn.BatchNorm2d(in_channels + i * growth_rate))
             self.convs.append(nn.Conv2d(in_channels + i * growth_rate, growth_rate, kernel_size=kernel_size, padding=padding))
 
+            self.add_module('bn_' + str(i), self.bns[i])
+            self.add_module('conv_' + str(i), self.convs[i])
+
     def forward(self, x):
         output = x
 
