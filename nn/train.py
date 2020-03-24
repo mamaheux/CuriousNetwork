@@ -100,7 +100,7 @@ def train(args):
         print('training loss: {}'.format(train_loss))
 
         model.eval()
-        validation_loss = ValidationLoss(args.val_path, model).calculate()
+        validation_loss = ValidationLoss(args.val_path, model, roc_curve_thresholds).calculate()
         learning_curves.add_validation_loss_value(validation_loss)
         print('validation loss: {}'.format(validation_loss))
 
