@@ -109,20 +109,20 @@ def train(args):
         model.eval()
         name_with_epoch = args.name + '_epoch_{}'.format(epoch)
 
-        validation_loss = ValidationLoss(args.val_path, model, roc_curve_thresholds).calculate()
+        validation_loss = ValidationLoss(args.val_path, normalization, model, roc_curve_thresholds).calculate()
         learning_curves.add_validation_loss_value(validation_loss)
         print('validation loss: {}'.format(validation_loss))
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]),
                    delimiter=',', fmt='%f')
 
-        roc_curve = RocCurve(args.test_path, model, roc_curve_thresholds)
+        roc_curve = RocCurve(args.test_path, normalization, model, roc_curve_thresholds)
         roc_curve.save_figure(os.path.join(args.output_path, name_with_epoch + '_roc.png'))
 
         torch.save(model.state_dict(), os.path.join(args.output_path, name_with_epoch + '.pth'))
 
     learning_curves.save_figure(os.path.join(args.output_path, args.name + '_learning_curves.png'))
 
-    model_execution_time = ModelExecutionTime(args.test_path, model)
+    model_execution_time = ModelExecutionTime(args.test_path, normalization, model)
     with open(os.path.join(args.output_path, args.name + '_execution_time.txt'), "w") as text_file:
         text_file.write("Forward: {} seconds\nBackward: {} seconds".format(*model_execution_time.calculate()))
 

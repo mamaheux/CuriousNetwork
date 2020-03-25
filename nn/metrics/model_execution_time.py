@@ -3,8 +3,8 @@ import time
 from curious_dataset import CuriousDataset
 
 class ModelExecutionTime:
-    def __init__(self, database_folder_path, model):
-        self._dataset = CuriousDataset(database_folder_path)
+    def __init__(self, dataset_folder_path, dataset_normalization, model):
+        self._dataset = CuriousDataset(dataset_folder_path, normalization=dataset_normalization)
         self._model = model
 
     def calculate(self):
