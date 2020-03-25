@@ -42,7 +42,7 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
-    # Parameters of the cnn_autoencoder
+    # cnn_autoencoder arguments
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
                         type=int, help='Choose the number of starting feature maps for the auto encoder',
                         default=4)
@@ -51,7 +51,7 @@ def main():
                                        'maps are goind to be multiplied from a layer to the next', default=2)
     parser.add_argument('--cnn_autoencoder_kernel_size', type=int, help='Choose the starting kernel size', default=3)
 
-    # Parameters of the cnn_vae
+    # cnn_vae arguments
     parser.add_argument('--cnn_vae_starting_feature_map',
                         type=int, help='Choose the number of starting feature maps for the auto encoder',
                         default=4)
