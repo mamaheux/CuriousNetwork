@@ -47,8 +47,11 @@ class RocCurve:
 
         return rates
 
-    def save_figure(self, output_path):
+    def save(self, output_path):
         rates = self.calculate()
+        np.savetxt(output_path + '.txt', rates, delimiter=',', fmt='%f')
+
+
         fig = plt.figure(figsize=(5, 5))
         ax = fig.add_subplot(111)
 
@@ -57,4 +60,4 @@ class RocCurve:
         ax.set_xlabel('False positive rate')
         ax.set_ylabel('True positive rate')
 
-        fig.savefig(output_path)
+        fig.savefig(output_path + '.png')
