@@ -7,15 +7,17 @@ import curious_dataset
 
 # Receptive field of the backend : 60x60
 class Vgg16BackendAutoencoder(torch.nn.Module):
-    def __init__(self):
+    def __init__(self, train_backend=False):
         super(Vgg16BackendAutoencoder, self).__init__()
 
         vgg16 = models.vgg16(pretrained=True)
         vgg16_layers = list(vgg16.features.children())[:14]
         vgg16_layers.append(torch.nn.MaxPool2d(8, stride=8))
         self._backend = torch.nn.Sequential(*vgg16_layers)
-        for p in self._backend.parameters():
-            p.requires_grad = False
+
+        if not train_backend:
+            for p in self._backend.parameters():
+                p.requires_grad = False
 
         backend_output_channels = 256
         self._encoder = torch.nn.Sequential(

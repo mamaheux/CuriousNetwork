@@ -38,11 +38,6 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
-    # small_cnn arguments
-    parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)
-    parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
-    parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
-
     # Parameters of the CNN autoencoder
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
                         type=int, help='Choose the number of starting feature maps for the auto encoder',
@@ -51,6 +46,14 @@ def main():
                         type=int, help='Choose the basis of the coefficient by which the feature' 
                                        'maps are goind to be multiplied from a layer to the next', default=2)
     parser.add_argument('--cnn_autoencoder_kernel_size', type=int, help='Choose the starting kernel size', default=3)
+
+    # vgg16_backend_autoencoder arguments
+    parser.add_argument('--vgg16_backend_autoencoder_train_backend', action='store_true', help='Train the backend')
+
+    # small_cnn arguments
+    parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)
+    parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
+    parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
 
     args = parser.parse_args()
     train(args)
@@ -123,15 +126,21 @@ def create_model(type, hyperparameters):
         roc_curve_thresholds = np.linspace(0, 1, num=1000)
         return CnnAutoencoder(ini_feature_maps=hyperparameters.cnn_autoencoder_starting_feature_map,
                               feature_maps_growth_factor=hyperparameters.cnn_autoencoder_growth_factor,
-                              kernel_size=hyperparameters.cnn_autoencoder_kernel_size), roc_curve_thresholds
+                              kernel_size=hyperparameters.cnn_autoencoder_kernel_size), \
+               roc_curve_thresholds
+
     elif type == 'vgg16_backend_autoencoder':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
-        return Vgg16BackendAutoencoder(), roc_curve_thresholds
+        return Vgg16BackendAutoencoder(train_backend=hyperparameters.vgg16_backend_autoencoder_train_backend), \
+               roc_curve_thresholds
+
     elif type == 'small_cnn':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
         return SmallCnnWithAutoencoder(kernel_size=hyperparameters.small_cnn_kernel_size,
                                        first_output_channels=hyperparameters.small_cnn_first_output_channels,
-                                       growth_rate=hyperparameters.small_cnn_growth_rate), roc_curve_thresholds
+                                       growth_rate=hyperparameters.small_cnn_growth_rate), \
+               roc_curve_thresholds
+
     else:
         raise ValueError('Invalid model type')
 
