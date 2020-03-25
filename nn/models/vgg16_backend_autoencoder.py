@@ -3,10 +3,11 @@ import torch.nn.functional as F
 
 import torchvision.models as models
 
+from models.base_model import BaseModel
 import curious_dataset
 
 # Receptive field of the backend : 60x60
-class Vgg16BackendAutoencoder(torch.nn.Module):
+class Vgg16BackendAutoencoder(BaseModel):
     def __init__(self, train_backend=False):
         super(Vgg16BackendAutoencoder, self).__init__()
 
