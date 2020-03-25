@@ -1,6 +1,9 @@
 import torch
+import torch.nn.functional as F
 
+import curious_dataset
 
+# Receptive field of the CNN : 60x60
 class SmallCnnWithAutoencoder(torch.nn.Module):
     def __init__(self, kernel_size=3, first_output_channels=8, growth_rate=2):
         super(SmallCnnWithAutoencoder, self).__init__()
@@ -17,7 +20,7 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
                             first_output_channels * growth_rate ** 1,
                             kernel_size, stride=1, padding=conv_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(5, stride=5),
+            torch.nn.MaxPool2d(2, stride=2),
             torch.nn.Conv2d(first_output_channels * growth_rate ** 1,
                             first_output_channels * growth_rate ** 2,
                             kernel_size, stride=1, padding=conv_padding),
@@ -26,7 +29,7 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
                             first_output_channels * growth_rate ** 3,
                             kernel_size, stride=1, padding=conv_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(3, stride=3),
+            torch.nn.MaxPool2d(2, stride=2),
             torch.nn.Conv2d(first_output_channels * growth_rate ** 3,
                             first_output_channels * growth_rate ** 4,
                             kernel_size, stride=1, padding=conv_padding),
@@ -35,7 +38,7 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
                             first_output_channels * growth_rate ** 5,
                             kernel_size, stride=1, padding=conv_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(2, stride=2),
+            torch.nn.MaxPool2d(8, stride=8),
             torch.nn.BatchNorm2d(first_output_channels * growth_rate ** 5)
         )
 
@@ -47,8 +50,7 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
             torch.nn.ReLU(True),
             torch.nn.Conv2d(cnn_output_channels // 4, cnn_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
-            torch.nn.Conv2d(cnn_output_channels // 8, cnn_output_channels // 16, 1, stride=1, padding=0),
-            torch.nn.ReLU(True),
+            torch.nn.Conv2d(cnn_output_channels // 8, cnn_output_channels // 16, 1, stride=1, padding=0)
         )
 
         self._decoder = torch.nn.Sequential(
@@ -63,6 +65,7 @@ class SmallCnnWithAutoencoder(torch.nn.Module):
 
     def forward(self, input):
         features = self._cnn(input)
+        features = F.interpolate(features, size=curious_dataset.LABEL_SIZE, mode='bilinear')
 
         x = self._encoder(features)
         x = self._decoder(x)

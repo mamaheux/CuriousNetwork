@@ -47,11 +47,14 @@ class RocCurve:
 
         return rates
 
-    def plot(self):
+    def save_figure(self, output_path):
         rates = self.calculate()
-        plt.plot(rates[0, :],rates[1, :], label='rates')
-        plt.plot(np.array([0, 1]), np.array([0, 1]),'--', label='rates')
-        plt.xlabel('False positive rate')
-        plt.ylabel('True positive rate')
-        plt.legend()
-        plt.show()
+        fig = plt.figure(figsize=(5, 5))
+        ax = fig.add_subplot(111)
+
+        ax.plot(rates[0, :],rates[1, :], label='rates')
+        ax.plot(np.array([0, 1]), np.array([0, 1]),'--', label='rates')
+        ax.set_xlabel('False positive rate')
+        ax.set_ylabel('True positive rate')
+
+        fig.savefig(output_path)
