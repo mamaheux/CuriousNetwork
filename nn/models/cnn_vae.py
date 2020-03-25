@@ -5,9 +5,9 @@ from models.base_model import BaseModel
 
 
 # Receptive field of the encoder (if kernel_size=3) : 60x60
-class CnnAutoencoder(BaseModel):
+class CnnVae(BaseModel):
     def __init__(self, ini_feature_maps=4, feature_maps_growth_factor=2, kernel_size=3):
-        super(CnnAutoencoder, self).__init__()
+        super(CnnVae, self).__init__()
 
         if kernel_size % 2 == 0:
             raise ValueError('Kernel size must be an odd number')
@@ -35,10 +35,10 @@ class CnnAutoencoder(BaseModel):
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 4,
-                            ini_feature_maps * feature_maps_growth_factor ** 5,
+                            2 * ini_feature_maps * feature_maps_growth_factor ** 5,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(4, stride=4)
+            torch.nn.MaxPool2d(4, stride=4),
         )
 
         self._decoder = torch.nn.Sequential(
@@ -68,9 +68,22 @@ class CnnAutoencoder(BaseModel):
 
         self._average_pool = torch.nn.AvgPool2d(30)
 
+    def reparameterize(self, mu, logvar):
+        std = torch.exp(0.5 * logvar)
+        eps = torch.randn_like(std)
+        return mu + eps * std
+
+    def internal_loss(self):
+        return -0.5 * torch.sum(1 + self._logvar - self._mu.pow(2) - self._logvar.exp()) # KLD
+
     def forward(self, input):
         x = self._encoder(input)
-        x = self._decoder(x)
+        z_channels = x.size()[1] // 2
+        self._mu = x[:, :z_channels, : ,:]
+        self._logvar = x[:, z_channels:, :, :]
+
+        z = self.reparameterize(self._mu, self._logvar)
+        x = self._decoder(z)
         x = F.interpolate(x, size=(input.size()[2], input.size()[3]), mode='bilinear')
 
         error = x - input

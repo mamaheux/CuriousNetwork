@@ -1,10 +1,11 @@
 import torch
 import torch.nn.functional as F
 
+from models.base_model import BaseModel
 import curious_dataset
 
 # Receptive field of the CNN : 60x60
-class SmallCnnWithAutoencoder(torch.nn.Module):
+class SmallCnnWithAutoencoder(BaseModel):
     def __init__(self, kernel_size=3, first_output_channels=8, growth_rate=2):
         super(SmallCnnWithAutoencoder, self).__init__()
         if kernel_size % 2 == 0:
