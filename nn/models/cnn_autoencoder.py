@@ -1,6 +1,7 @@
 import torch
 import torch.nn.functional as F
 
+# Receptive field of the encoder (if kernel_size=3) : 60x60
 class CnnAutoencoder(torch.nn.Module):
     def __init__(self, ini_feature_maps=4, feature_maps_growth_factor=2, kernel_size=3):
         super(CnnAutoencoder, self).__init__()
@@ -16,7 +17,7 @@ class CnnAutoencoder(torch.nn.Module):
                             ini_feature_maps * feature_maps_growth_factor ** 1,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(5, stride=5),
+            torch.nn.MaxPool2d(2, stride=2),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 1,
                             ini_feature_maps * feature_maps_growth_factor ** 2,
                             kernel_size, stride=1, padding=cnn_padding),
@@ -34,13 +35,13 @@ class CnnAutoencoder(torch.nn.Module):
                             ini_feature_maps * feature_maps_growth_factor ** 5,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
-            torch.nn.MaxPool2d(2, stride=2),
+            torch.nn.MaxPool2d(4, stride=4)
         )
 
         self._decoder = torch.nn.Sequential(
             torch.nn.ConvTranspose2d(ini_feature_maps * feature_maps_growth_factor ** 5,
                                      ini_feature_maps * feature_maps_growth_factor ** 4,
-                                     kernel_size, stride=2, padding=0),
+                                     kernel_size, stride=4, padding=0),
             torch.nn.ReLU(True),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 4,
                             ini_feature_maps * feature_maps_growth_factor ** 3,
@@ -56,7 +57,7 @@ class CnnAutoencoder(torch.nn.Module):
             torch.nn.ReLU(True),
             torch.nn.ConvTranspose2d(ini_feature_maps * feature_maps_growth_factor ** 1,
                                      ini_feature_maps,
-                                     kernel_size, stride=5, padding=cnn_padding),
+                                     kernel_size, stride=2, padding=cnn_padding),
             torch.nn.ReLU(True),
             torch.nn.Conv2d(ini_feature_maps, 3, kernel_size, stride=1, padding=0),
             torch.nn.Sigmoid()
