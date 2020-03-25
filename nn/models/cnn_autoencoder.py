@@ -1,7 +1,6 @@
 import torch
 import torch.nn.functional as F
 
-
 class CnnAutoencoder(torch.nn.Module):
     def __init__(self, ini_feature_maps=4, feature_maps_growth_factor=2, kernel_size=3):
         super(CnnAutoencoder, self).__init__()

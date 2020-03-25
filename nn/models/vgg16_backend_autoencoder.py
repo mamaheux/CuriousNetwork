@@ -28,8 +28,7 @@ class Vgg16BackendAutoencoder(torch.nn.Module):
             torch.nn.ReLU(True),
             torch.nn.Conv2d(backend_output_channels // 4, backend_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
-            torch.nn.Conv2d(backend_output_channels // 8, backend_output_channels // 16, 1, stride=1, padding=0),
-            torch.nn.ReLU(True),
+            torch.nn.Conv2d(backend_output_channels // 8, backend_output_channels // 16, 1, stride=1, padding=0)
         )
 
         self._decoder = torch.nn.Sequential(
