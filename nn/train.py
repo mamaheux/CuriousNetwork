@@ -121,13 +121,17 @@ def train(args):
 def create_model(type, hyperparameters):
     if type == 'cnn_autoencoder':
         roc_curve_thresholds = np.linspace(0, 1, num=1000)
-        return CnnAutoencoder(), roc_curve_thresholds
+        return CnnAutoencoder(ini_feature_maps=hyperparameters.cnn_autoencoder_starting_feature_map,
+                              feature_maps_growth_factor=hyperparameters.cnn_autoencoder_growth_factor,
+                              kernel_size=hyperparameters.cnn_autoencoder_kernel_size), roc_curve_thresholds
     elif type == 'vgg16_backend_autoencoder':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
         return Vgg16BackendAutoencoder(), roc_curve_thresholds
     elif type == 'small_cnn':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
-        return SmallCnnWithAutoencoder(), roc_curve_thresholds
+        return SmallCnnWithAutoencoder(kernel_size=hyperparameters.small_cnn_kernel_size,
+                                       first_output_channels=hyperparameters.small_cnn_first_output_channels,
+                                       growth_rate=hyperparameters.small_cnn_growth_rate), roc_curve_thresholds
     else:
         raise ValueError('Invalid model type')
 
