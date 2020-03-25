@@ -125,8 +125,8 @@ def train(args):
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]),
                    delimiter=',', fmt='%f')
 
-        roc_curve = RocCurve(args.test_path, normalization, model, roc_curve_thresholds)
-        roc_curve.save_figure(os.path.join(args.output_path, name_with_epoch + '_roc.png'))
+        roc_curve = RocCurve(args.test_path, normalization, model, roc_curve_thresholds)  
+        roc_curve.save(os.path.join(args.output_path, name_with_epoch + '_roc'))
 
         torch.save(model.state_dict(), os.path.join(args.output_path, name_with_epoch + '.pth'))
 
