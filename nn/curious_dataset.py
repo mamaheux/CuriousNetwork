@@ -48,7 +48,10 @@ class CuriousDataset(Dataset):
         if os.path.exists(path):
             return np.loadtxt(path, delimiter=',').astype(int)
         else:
-            return np.zeros((9,16), dtype=int)
+            return np.zeros(LABEL_SIZE, dtype=int)
+
+    def get_filename(self, index):
+        return self._images[index].split(os.path.sep)[-1]
 
     def _filename_sort_key(self, x):
         x = str.replace(x, '.jpg', '')
