@@ -10,23 +10,29 @@ from skimage import transform
 
 MAX_FRAME_COUNT = 1000000000
 OUTPUT_IMAGE_SIZE = (270, 480)
+LABEL_SIZE = (9, 16)
 
 class CuriousDataset(Dataset):
-    def __init__(self, folder_path, transform=None):
+    def __init__(self, folder_path, transform=None, normalization=None):
         self._folder_path = folder_path
         self._images = glob.glob(os.path.join(self._folder_path, '*.jpg'))
         self._images.sort(key=self._filename_sort_key)
         self._transform = transform
+        self._normalization = normalization
 
     def __len__(self):
-        return len(self._images)
+        return 40#len(self._images)
 
     def __getitem__(self, index):
         image = self._get_image(index)
         annotation = self._get_frame_annotation(index)
+
         if self._transform is not None:
             image, annotation = self._transform((image, annotation))
-        image = (image - image.min()) / (image.max() - image.min())
+
+        if self._normalization is not None:
+            image = self._normalization(image)
+
         return image, annotation
 
     def _get_image(self, index):
@@ -42,7 +48,10 @@ class CuriousDataset(Dataset):
         if os.path.exists(path):
             return np.loadtxt(path, delimiter=',').astype(int)
         else:
-            return np.zeros((9,16), dtype=int)
+            return np.zeros(LABEL_SIZE, dtype=int)
+
+    def get_filename(self, index):
+        return self._images[index].split(os.path.sep)[-1]
 
     def _filename_sort_key(self, x):
         x = str.replace(x, '.jpg', '')
@@ -51,5 +60,6 @@ class CuriousDataset(Dataset):
 
         return MAX_FRAME_COUNT * int(x[0]) + int(x[1])
 
-def create_dataset_loader(folder_path, batch_size, transform=None):
-    return DataLoader(CuriousDataset(folder_path, transform=transform), batch_size=batch_size, shuffle=True, num_workers=4)
+def create_dataset_loader(folder_path, batch_size, transform=None, normalization=None):
+    return DataLoader(CuriousDataset(folder_path, transform=transform, normalization=normalization),
+                      batch_size=batch_size, shuffle=True, num_workers=4)

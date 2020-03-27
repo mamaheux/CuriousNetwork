@@ -1,15 +1,15 @@
 import torch
-import torch.nn as nn
 
-from nn.models.CNNBlocks import DenseBlock
+from models.base_model import BaseModel
+from models.cnn_blocks import DenseBlock
 
-class SmallCnnWithAutoencoderDenseBlocks(torch.nn.Module):
-    def __init__(self, kernel_size=3, first_output_channels=8, growth_rate=2):
+
+class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
+    def __init__(self, kernel_size=3, growth_rate=2):
         super(SmallCnnWithAutoencoderDenseBlocks, self).__init__()
         if kernel_size % 2 == 0:
             raise ValueError('Invalid kernel size')
 
-        conv_padding = kernel_size // 2
         self._cnn = torch.nn.Sequential(
             DenseBlock(2, 3, growth_rate),
 
@@ -26,7 +26,6 @@ class SmallCnnWithAutoencoderDenseBlocks(torch.nn.Module):
             DenseBlock(2, 3 + growth_rate * 10, growth_rate),
             torch.nn.MaxPool2d(2, stride=2),
             torch.nn.BatchNorm2d(3 + growth_rate * 12)
-
         )
 
         cnn_output_channels = 3 + growth_rate * 12
@@ -38,7 +37,7 @@ class SmallCnnWithAutoencoderDenseBlocks(torch.nn.Module):
             torch.nn.Conv2d(cnn_output_channels // 4, cnn_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
             torch.nn.Conv2d(cnn_output_channels // 8, cnn_output_channels // 16, 1, stride=1, padding=0),
-            torch.nn.ReLU(True),
+            torch.nn.ReLU(True)
         )
 
         self._decoder = torch.nn.Sequential(

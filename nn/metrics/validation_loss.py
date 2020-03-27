@@ -1,20 +1,11 @@
 import numpy as np
 
-from curious_dataset import CuriousDataset
+from metrics.roc_curve import RocCurve
 
 class ValidationLoss:
-    def __init__(self, database_folder_path, model):
-        self._dataset = CuriousDataset(database_folder_path)
-        self._model = model
+    def __init__(self, dataset_folder_path, dataset_normalization, model, roc_curve_thresholds):
+        self._roc_curve = RocCurve(dataset_folder_path, dataset_normalization, model, roc_curve_thresholds)
 
-    def calculate(self):
-        J = 0
-        for i in range(len(self._dataset)):
-            image, annotation = self._dataset[i]
-
-            error = self._model(image.unsqueeze(0)).detach().numpy()
-            error = np.sqrt(error)
-
-            J += np.sum(annotation * error - (1 - annotation)*error)
-
-        return J / len(self._dataset)
+    def calculate(self, use_gpu=False):
+        rates = self._roc_curve.calculate(use_gpu=use_gpu)
+        return np.trapz(rates[1, :], x=rates[0, :])

@@ -1,15 +1,17 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import torch
+
 from curious_dataset import CuriousDataset
 
 class RocCurve:
-    def __init__(self, database_folder_path, model, thresholds):
-        self._dataset = CuriousDataset(database_folder_path)
+    def __init__(self, dataset_folder_path, dataset_normalization, model, thresholds):
+        self._dataset = CuriousDataset(dataset_folder_path, normalization=dataset_normalization)
         self._model = model
         self._thresholds = thresholds
 
-    def calculate(self):
+    def calculate(self, use_gpu=False):
         positive_count = 0
         negative_count = 0
 
@@ -20,13 +22,20 @@ class RocCurve:
             true_positive_counts[threshold] = 0
             false_positive_counts[threshold] = 0
 
+        if torch.cuda.is_available() and use_gpu:
+            model = self._model.cuda()
+        else:
+            model = self._model
+
         for i in range(len(self._dataset)):
             image, annotation = self._dataset[i]
+            if torch.cuda.is_available() and use_gpu:
+                image = image.cuda()
 
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            error = self._model(image.unsqueeze(0)).detach().numpy()
+            error = model(image.unsqueeze(0)).detach().numpy()
             error = np.sqrt(error)
 
             for threshold in self._thresholds:
@@ -47,11 +56,17 @@ class RocCurve:
 
         return rates
 
-    def plot(self):
-        rates = self.calculate()
-        plt.plot(rates[0, :],rates[1, :], label='rates')
-        plt.plot(np.array([0, 1]), np.array([0, 1]),'--', label='rates')
-        plt.xlabel('False positive rate')
-        plt.ylabel('True positive rate')
-        plt.legend()
-        plt.show()
+    def save(self, output_path, use_gpu=False):
+        rates = self.calculate(use_gpu=use_gpu)
+        np.savetxt(output_path + '.txt', rates, delimiter=',', fmt='%f')
+
+
+        fig = plt.figure(figsize=(5, 5))
+        ax = fig.add_subplot(111)
+
+        ax.plot(rates[0, :],rates[1, :], label='rates')
+        ax.plot(np.array([0, 1]), np.array([0, 1]),'--', label='rates')
+        ax.set_xlabel('False positive rate')
+        ax.set_ylabel('True positive rate')
+
+        fig.savefig(output_path + '.png')
