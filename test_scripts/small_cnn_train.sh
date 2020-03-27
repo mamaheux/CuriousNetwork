@@ -13,11 +13,15 @@ pip install --no-index torch_gpu
 
 # Copy code and data
 cd $SLURM_TMPDIR
-cp -r ~/CuriousNetwork/nn/ .
-cd nn/
-cp ~/CuriousNetwork/dataset.tar .
-tar xf dataset.tar
+cp -r ~/CuriousNetwork/nn ./
+cd nn
+cp ~/CuriousNetwork/data.tar .
+tar xf data.tar
 
-cd $SLURM_TMPDIR/CuriousNetwork/nn/
+python train.py "$@"
 
-  python train.py "$@"
+OUTDIR=~/CuriousNetwork/out_300/lr_${LR}_unet_depth_${UNET_DEPTH}_unet_res_dense_size_${UNET_RES_DENSE_SIZE}_data_aug_${USE_DATA_AUG}_job_id_${SLURM_JOB_ID}
+mkdir -p $OUTDIR
+cp fig1.png $OUTDIR/
+cp fig2.png $OUTDIR/
+cp output.txt $OUTDIR/
