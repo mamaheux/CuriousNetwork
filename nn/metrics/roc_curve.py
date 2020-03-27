@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 
+import torch
+
 from curious_dataset import CuriousDataset
 
 class RocCurve:
@@ -9,7 +11,7 @@ class RocCurve:
         self._model = model
         self._thresholds = thresholds
 
-    def calculate(self):
+    def calculate(self, use_gpu=False):
         positive_count = 0
         negative_count = 0
 
@@ -20,13 +22,20 @@ class RocCurve:
             true_positive_counts[threshold] = 0
             false_positive_counts[threshold] = 0
 
+        if torch.cuda.is_available() and use_gpu:
+            model = self._model.cuda()
+        else:
+            model = self._model
+
         for i in range(len(self._dataset)):
             image, annotation = self._dataset[i]
+            if torch.cuda.is_available() and use_gpu:
+                image = image.cuda()
 
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            error = self._model(image.unsqueeze(0)).detach().numpy()
+            error = model(image.unsqueeze(0)).detach().numpy()
             error = np.sqrt(error)
 
             for threshold in self._thresholds:
@@ -47,8 +56,8 @@ class RocCurve:
 
         return rates
 
-    def save(self, output_path):
-        rates = self.calculate()
+    def save(self, output_path, use_gpu=False):
+        rates = self.calculate(use_gpu=use_gpu)
         np.savetxt(output_path + '.txt', rates, delimiter=',', fmt='%f')
 
 
