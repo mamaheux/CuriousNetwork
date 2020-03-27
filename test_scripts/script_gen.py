@@ -64,7 +64,7 @@ for location in ["tunnel", "corridor"]:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/{fm}/' \
+                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/ ' \
                                    f'--name n --type {model_type} ' \
                                    f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
                                    f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
@@ -75,7 +75,7 @@ for location in ["tunnel", "corridor"]:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/' \
+                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/ ' \
                                    f'--name n --type {model_type} ' \
                                    f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
                                     f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
@@ -86,7 +86,7 @@ for location in ["tunnel", "corridor"]:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/data_augmentation_{da}/' \
+                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/data_augmentation_{da}/ ' \
                                    f'--name n --type {model_type} ' \
                                    f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
                                                                                                 f'--epoch_count {epoch_count} --weight_decay {weight_decay}'
@@ -95,7 +95,7 @@ for location in ["tunnel", "corridor"]:
             for da in data_augmentation:
                 for fm in small_cnn_starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/{learning_rate}/first_output_channels_{fm}/growth_rate_{gf}/' \
+                        call_str = f'sbatch train_tunnel.sh --use_gpu --output_path {output_path}/{location}/{model_type}/{learning_rate}/first_output_channels_{fm}/growth_rate_{gf}/ ' \
                                    f'name n --type {model_type} ' \
                                    f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
                                    f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
