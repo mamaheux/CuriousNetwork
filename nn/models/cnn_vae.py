@@ -73,8 +73,13 @@ class CnnVae(BaseModel):
         eps = torch.randn_like(std)
         return mu + eps * std
 
-    def internal_loss(self):
-        return -0.5 * torch.sum(1 + self._logvar - self._mu.pow(2) - self._logvar.exp()) # KLD
+    def internal_loss(self, use_gpu=False):
+        loss = -0.5 * torch.sum(1 + self._logvar - self._mu.pow(2) - self._logvar.exp()) # KLD
+
+        if torch.cuda.is_available() and use_gpu:
+            loss = loss.cuda()
+
+        return loss
 
     def forward(self, input):
         x = self._encoder(input)

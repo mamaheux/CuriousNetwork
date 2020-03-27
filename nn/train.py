@@ -101,7 +101,7 @@ def train(args):
                 image = image.cuda()
 
             output = model(image)
-            loss = output.sum() + model.internal_loss()
+            loss = output.sum() + model.internal_loss(use_gpu=args.use_gpu)
 
             optimizer.zero_grad()
             loss.backward()
