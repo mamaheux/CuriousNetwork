@@ -40,7 +40,7 @@ class CuriousDataset(Dataset):
         float_image = int8_image.astype(np.float32)
         float_image = transform.resize(float_image, OUTPUT_IMAGE_SIZE)
         float_image = np.moveaxis(float_image, -1, 0)
-        return torch.from_numpy(float_image / 255)
+        return torch.from_numpy(float_image / 255).float()
 
     def _get_frame_annotation(self, index):
         self._current_annonated_frame = None
