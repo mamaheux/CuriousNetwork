@@ -64,8 +64,8 @@ for model_type in model_types:
         for da in data_augmentation:
             for fm in starting_feature_map:
                 for gf in growth_factor:
-                    call_str = f'sbatch train.sh --use_gpu --train_path {train_path} --val_path {val_path} --output_path {output_path}/{model_type}/{fm}/' \
-                               f'--test_path {test_path} --name n --type {model_type} ' \
+                    call_str = f'sbatch train.sh --use_gpu --output_path {output_path}/{model_type}/{fm}/' \
+                               f'--name n --type {model_type} ' \
                                f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
                                f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
                                f'--cnn_autoencoder_starting_feature_map {fm} --cnn_autoencoder_growth_factor {gf} ' \
@@ -75,8 +75,8 @@ for model_type in model_types:
         for da in data_augmentation:
             for fm in starting_feature_map:
                 for gf in growth_factor:
-                    call_str = f'sbatch train.sh --use_gpu --train_path {train_path} --val_path {val_path} --output_path {output_path}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/' \
-                               f'--test_path {test_path} --name n --type {model_type} ' \
+                    call_str = f'sbatch train.sh --use_gpu --output_path {output_path}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/' \
+                               f'--name n --type {model_type} ' \
                                f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
                                 f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
                                f'--cnn_autoencoder_starting_feature_map {fm} --cnn_autoencoder_growth_factor {gf} ' \
@@ -86,8 +86,8 @@ for model_type in model_types:
         for da in data_augmentation:
             for fm in starting_feature_map:
                 for gf in growth_factor:
-                    call_str = f'sbatch train.sh --use_gpu --train_path {train_path} --val_path {val_path} --output_path {output_path}/{model_type}/data_augmentation_{da}/' \
-                               f'--test_path {test_path} --name n --type {model_type} ' \
+                    call_str = f'sbatch train.sh --use_gpu --output_path {output_path}/{model_type}/data_augmentation_{da}/' \
+                               f'--name n --type {model_type} ' \
                                f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
                                                                                             f'--epoch_count {epoch_count} --weight_decay {weight_decay}'
                     print(call_str)
@@ -95,8 +95,8 @@ for model_type in model_types:
         for da in data_augmentation:
             for fm in small_cnn_starting_feature_map:
                 for gf in growth_factor:
-                    call_str = f'sbatch train.sh --use_gpu --train_path {train_path} --val_path {val_path} --output_path {output_path}/{model_type}/{learning_rate}/first_output_channels_{fm}/growth_rate_{gf}/' \
-                               f'--test_path {test_path} --name n --type {model_type} ' \
+                    call_str = f'sbatch train.sh --use_gpu --output_path {output_path}/{model_type}/{learning_rate}/first_output_channels_{fm}/growth_rate_{gf}/' \
+                               f'name n --type {model_type} ' \
                                f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
                                f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
                                f'--small_cnn_kernel_size {3} --small_cnn_first_output_channels {fm} ' \

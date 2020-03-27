@@ -16,8 +16,10 @@ cd $SLURM_TMPDIR
 cp -r ~/CuriousNetwork/nn/ .
 cd nn/
 cp ~/CuriousNetwork/dataset.tar .
-tar xf dataset.tar
+tar -xf dataset.tar
 
 cd $SLURM_TMPDIR/CuriousNetwork/nn/
 
-  python train.py "$@"
+python train.py --train_path $SLURM_TMPDIR/CuriousNetwork/nn/dataset/jpg/corridor_train \
+                --val_path $SLURM_TMPDIR/CuriousNetwork/nn/dataset/jpg/corridor_val \
+                --test_path $SLURM_TMPDIR/CuriousNetwork/nn//dataset/jpg/corridor_test "$@"
