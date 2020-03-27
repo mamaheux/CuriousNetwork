@@ -69,7 +69,10 @@ def run(args):
         if torch.cuda.is_available() and args.use_gpu:
             image = image.cuda()
 
-        error = model(image.unsqueeze(0)).detach().numpy()
+        if torch.cuda.is_available() and args.use_gpu:
+            error = model(image.unsqueeze(0)).cpu().detach().numpy()
+        else:
+            error = model(image.unsqueeze(0)).detach().numpy()
         error = np.sqrt(error)
         predicted_roi = error > args.threshold
 
