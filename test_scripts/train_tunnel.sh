@@ -1,7 +1,7 @@
 #!/bin/bash
 #SBATCH --gres=gpu:k20:1
 #SBATCH --cpus-per-task=2
-#SBATCH --time=3-0:00:00  # DD-HH:MM:SS
+#SBATCH --time=0-1:00:00  # DD-HH:MM:SS
 
 # Setup venv
 cd $SLURM_TMPDIR
