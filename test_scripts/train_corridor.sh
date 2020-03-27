@@ -22,4 +22,4 @@ cd $SLURM_TMPDIR/CuriousNetwork/nn/
 
 python train.py --train_path $SLURM_TMPDIR/CuriousNetwork/nn/dataset/jpg/corridor_train \
                 --val_path $SLURM_TMPDIR/CuriousNetwork/nn/dataset/jpg/corridor_val \
-                --test_path $SLURM_TMPDIR/CuriousNetwork/nn//dataset/jpg/corridor_test "$@"
+                --test_path $SLURM_TMPDIR/CuriousNetwork/nn/dataset/jpg/corridor_test "$@"
