@@ -16,7 +16,6 @@ from metrics.model_execution_time import ModelExecutionTime
 
 from models import create_model
 
-
 def main():
     parser = argparse.ArgumentParser(description='Train Curious Network')
     parser.add_argument('--use_gpu', action='store_true')
@@ -27,7 +26,8 @@ def main():
     parser.add_argument('-n', '--name', type=str, help='Choose the model name', required=True)
 
     parser.add_argument('-t', '--type',
-                        choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn'],
+                        choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn',
+                                 'small_cnn_dense_blocks'],
                         help='Choose the network type', required=True)
     parser.add_argument('-s', '--batch_size', type=int, help='Set the batch size for the training', default=20)
     parser.add_argument('-d', '--data_augmentation', action='store_true', help='Use data augmentation or not')
@@ -60,6 +60,12 @@ def main():
     parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)
     parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
     parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
+
+    # small_cnn_dense_blocks arguments
+    parser.add_argument('--small_cnn_dense_blocks_kernel_size', type=int,
+                        help='Set the value for small_cnn_dense_blocks', default=3)
+    parser.add_argument('--small_cnn_dense_blocks_growth_rate', type=int,
+                        help='Set the value for small_cnn_dense_blocks', default=2)
 
     args = parser.parse_args()
     train(args)
@@ -128,7 +134,6 @@ def train(args):
     with open(os.path.join(args.output_path, args.name + '_execution_time.txt'), "w") as text_file:
         text_file.write("Forward: {} seconds\nBackward: {} seconds"
                         .format(*model_execution_time.calculate(use_gpu=args.use_gpu)))
-
 
 if __name__ == '__main__':
     main()
