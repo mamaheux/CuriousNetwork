@@ -3,9 +3,6 @@ import os
 import numpy as np
 
 import torch
-from torch.autograd import Variable
-
-import torchvision.transforms as transforms
 
 from barbar import Bar
 
@@ -17,13 +14,7 @@ from metrics.validation_loss import ValidationLoss
 from metrics.roc_curve import RocCurve
 from metrics.model_execution_time import ModelExecutionTime
 
-from models.cnn_autoencoder import CnnAutoencoder
-from models.cnn_vae import CnnVae
-from models.vgg16_backend_autoencoder import Vgg16BackendAutoencoder
-from models.small_cnn import SmallCnnWithAutoencoder
-
-from utils import MinMaxNormalization
-
+from models import create_model
 
 def main():
     parser = argparse.ArgumentParser(description='Train Curious Network')
@@ -34,7 +25,9 @@ def main():
     parser.add_argument('-o', '--output_path', type=str, help='Choose the output path', required=True)
     parser.add_argument('-n', '--name', type=str, help='Choose the model name', required=True)
 
-    parser.add_argument('-t', '--type', choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn'],
+    parser.add_argument('-t', '--type',
+                        choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn',
+                                 'small_cnn_dense_blocks'],
                         help='Choose the network type', required=True)
     parser.add_argument('-s', '--batch_size', type=int, help='Set the batch size for the training', default=20)
     parser.add_argument('-d', '--data_augmentation', action='store_true', help='Use data augmentation or not')
@@ -68,6 +61,12 @@ def main():
     parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
     parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
 
+    # small_cnn_dense_blocks arguments
+    parser.add_argument('--small_cnn_dense_blocks_kernel_size', type=int,
+                        help='Set the value for small_cnn_dense_blocks', default=3)
+    parser.add_argument('--small_cnn_dense_blocks_growth_rate', type=int,
+                        help='Set the value for small_cnn_dense_blocks', default=2)
+
     args = parser.parse_args()
     train(args)
 
@@ -99,9 +98,7 @@ def train(args):
         model.train()
         for idx, (image, _) in enumerate(Bar(dataset_loader)):
             if torch.cuda.is_available() and args.use_gpu:
-                image = Variable(image).cuda()
-            else:
-                image = Variable(image)
+                image = image.cuda()
 
             output = model(image)
             loss = output.sum() + model.internal_loss()
@@ -119,14 +116,15 @@ def train(args):
         model.eval()
         name_with_epoch = args.name + '_epoch_{}'.format(epoch)
 
-        validation_loss = ValidationLoss(args.val_path, normalization, model, roc_curve_thresholds).calculate()
+        validation_loss = ValidationLoss(args.val_path, normalization, model, roc_curve_thresholds) \
+            .calculate(use_gpu=args.use_gpu)
         learning_curves.add_validation_loss_value(validation_loss)
         print('validation loss: {}'.format(validation_loss))
         np.savetxt(os.path.join(args.output_path, name_with_epoch + '_val.txt'), np.array([validation_loss]),
                    delimiter=',', fmt='%f')
 
-        roc_curve = RocCurve(args.test_path, normalization, model, roc_curve_thresholds)  
-        roc_curve.save(os.path.join(args.output_path, name_with_epoch + '_roc'))
+        roc_curve = RocCurve(args.test_path, normalization, model, roc_curve_thresholds)
+        roc_curve.save(os.path.join(args.output_path, name_with_epoch + '_roc'), use_gpu=args.use_gpu)
 
         torch.save(model.state_dict(), os.path.join(args.output_path, name_with_epoch + '.pth'))
 
@@ -134,43 +132,8 @@ def train(args):
 
     model_execution_time = ModelExecutionTime(args.test_path, normalization, model)
     with open(os.path.join(args.output_path, args.name + '_execution_time.txt'), "w") as text_file:
-        text_file.write("Forward: {} seconds\nBackward: {} seconds".format(*model_execution_time.calculate()))
-
-
-def create_model(type, hyperparameters):
-    if type == 'cnn_autoencoder':
-        roc_curve_thresholds = np.linspace(0, 1, num=1000)
-        return CnnAutoencoder(ini_feature_maps=hyperparameters.cnn_autoencoder_starting_feature_map,
-                              feature_maps_growth_factor=hyperparameters.cnn_autoencoder_growth_factor,
-                              kernel_size=hyperparameters.cnn_autoencoder_kernel_size), \
-               MinMaxNormalization(), \
-               roc_curve_thresholds
-
-    if type == 'cnn_vae':
-        roc_curve_thresholds = np.linspace(0, 1, num=1000)
-        return CnnVae(ini_feature_maps=hyperparameters.cnn_vae_starting_feature_map,
-                      feature_maps_growth_factor=hyperparameters.cnn_vae_growth_factor,
-                      kernel_size=hyperparameters.cnn_vae_kernel_size), \
-               MinMaxNormalization(), \
-               roc_curve_thresholds
-
-    elif type == 'vgg16_backend_autoencoder':
-        roc_curve_thresholds = np.linspace(0, 10, num=10000)
-        return Vgg16BackendAutoencoder(train_backend=hyperparameters.vgg16_backend_autoencoder_train_backend), \
-               transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), \
-               roc_curve_thresholds
-
-    elif type == 'small_cnn':
-        roc_curve_thresholds = np.linspace(0, 10, num=10000)
-        return SmallCnnWithAutoencoder(kernel_size=hyperparameters.small_cnn_kernel_size,
-                                       first_output_channels=hyperparameters.small_cnn_first_output_channels,
-                                       growth_rate=hyperparameters.small_cnn_growth_rate), \
-               transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), \
-               roc_curve_thresholds
-
-    else:
-        raise ValueError('Invalid model type')
-
+        text_file.write("Forward: {} seconds\nBackward: {} seconds"
+                        .format(*model_execution_time.calculate(use_gpu=args.use_gpu)))
 
 if __name__ == '__main__':
     main()

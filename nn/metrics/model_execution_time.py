@@ -1,5 +1,7 @@
 import time
 
+import torch
+
 from curious_dataset import CuriousDataset
 
 class ModelExecutionTime:
@@ -7,15 +9,22 @@ class ModelExecutionTime:
         self._dataset = CuriousDataset(dataset_folder_path, normalization=dataset_normalization)
         self._model = model
 
-    def calculate(self):
+    def calculate(self, use_gpu=False):
         forward_elapsed_time = 0
         backward_elapsed_time = 0
 
+        if torch.cuda.is_available() and use_gpu:
+            model = self._model.cuda()
+        else:
+            model = self._model
+
         for i in range(len(self._dataset)):
             image, _ = self._dataset[i]
+            if torch.cuda.is_available() and use_gpu:
+                image = image.cuda()
 
             start = time.time()
-            output = self._model(image.unsqueeze(0))
+            output = model(image.unsqueeze(0))
             forward_elapsed_time += time.time() - start
 
             start = time.time()
