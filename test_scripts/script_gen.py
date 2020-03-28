@@ -19,44 +19,47 @@ growth_factor = [2, 3]
 kernel_size = 3
 
 # VGG16 backend
-train_back_end = True
+train_back_end = [0, 1]
 
 # CNN autoencoder & CNN vanilla
 small_cnn_starting_feature_map = [2, 4, 8, 16]
 small_cnn_growth_factor = [2, 4]
 small_cnn_kernel_size = 3
 
-'--use_gpu'
-'--train_path'
-'--output_path'
-'--test_path'
-'--output_path'
-'--name'
+"""
+--use_gpu
+--train_path
+--output_path
+--test_path
+--output_path
+--name
 
-'--type'
-'--batch_size'
-'-data_augmentation'
-'--learning_rate'
-'--epoch_count'
-'--weight_decay'
+--type
+--batch_size
+--data_augmentation
+--learning_rate
+--epoch_count
+--weight_decay
 
-    # cnn_autoencoder arguments
-'--cnn_autoencoder_starting_feature_map'
-'--cnn_autoencoder_growth_factor'
-'--cnn_autoencoder_kernel_size'
+# cnn_autoencoder arguments
+--cnn_autoencoder_starting_feature_map
+--cnn_autoencoder_growth_factor
+--cnn_autoencoder_kernel_size
 
-    # cnn_vae arguments
-'--cnn_vae_starting_feature_map'
-'--cnn_vae_growth_factor'
-'--cnn_vae_kernel_size'
+# cnn_vae arguments
+--cnn_vae_starting_feature_map
+--cnn_vae_growth_factor
+--cnn_vae_kernel_size
 
-'--vgg16_backend_autoencoder_train_backend'
+# vgg16_backend_autoencoder arguments
+--vgg16_backend_autoencoder_train_backend
 
-    # small_cnn arguments
-'--small_cnn_kernel_size'
-'--small_cnn_first_output_channels'
-'--small_cnn_growth_rate'
+# small_cnn arguments
+--small_cnn_kernel_size
+--small_cnn_first_output_channels
+--small_cnn_growth_rate
 
+"""
 
 for dataset in ["tunnel", "corridor"]:
     for model_type in model_types:
@@ -101,16 +104,20 @@ for dataset in ["tunnel", "corridor"]:
         if model_type == 'vgg16_backend_autoencoder':
             for da in data_augmentation:
                 for fm in starting_feature_map:
-                    for gf in growth_factor:
+                    for tb in train_back_end:
                         call_str = f'sbatch train_{dataset}.sh ' \
                                    f'--use_gpu ' \
-                                   f'--output_path {output_path}/{dataset}/{model_type}/data_augmentation_{da}/ ' \
+                                   f'--output_path ' \
+                                       f'{output_path}/{dataset}/{model_type}/' \
+                                       f'data_augmentation_{da}/ ' \
                                    f'--name n ' \
                                    f'--type {model_type} ' \
                                    f'--batch_size {batch_size} ' +\
-                                   f'--data_augmentation' * da + \
+                                   f'--data_augmentation' * da +\
+                                   f'--vgg16_backend_autoencoder_train_backend' * tb +\
                                    f'--learning_rate {learning_rate} ' \
-                                                                                                f'--epoch_count {epoch_count} --weight_decay {weight_decay}'
+                                   f'--epoch_count {epoch_count} ' \
+                                   f'--weight_decay {weight_decay}'
                         print(call_str)
         if model_type == 'small_cnn':
             for da in data_augmentation:
