@@ -72,6 +72,7 @@ def main():
 
 
 def train(args):
+    os.environ['TORCH_HOME'] = 'models'
     model, normalization, roc_curve_thresholds = create_model(args.type, args)
 
     if args.data_augmentation:

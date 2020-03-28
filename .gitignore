@@ -135,3 +135,4 @@ dataset/
 tools/labeling/test.csv
 dataset.tar
 test_scripts/slur*.out
+nn/models/checkpoints/*
