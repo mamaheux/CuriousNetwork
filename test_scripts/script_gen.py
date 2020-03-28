@@ -6,7 +6,9 @@ test_path = ''
 output_path = '~/CuriousNetwork_out'
 model_name = ''
 
-model_types = ['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn']
+model_types = ['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn', 'small_cnn_dense_blocks']
+datasets = ["tunnel", "corridor"]
+
 batch_size = 20
 data_augmentation = [0, 1]
 learning_rate = 0.001
@@ -25,6 +27,9 @@ train_back_end = [0, 1]
 small_cnn_starting_feature_map = [2, 4, 8, 16]
 small_cnn_growth_factor = [2, 4]
 small_cnn_kernel_size = 3
+
+# small cnn dense blocks
+dense_blocks_growth_rates = [2, 4, 8, 16, 32]
 
 """
 --use_gpu
@@ -61,7 +66,7 @@ small_cnn_kernel_size = 3
 
 """
 
-for dataset in ["tunnel", "corridor"]:
+for dataset in datasets:
     for model_type in model_types:
         if model_type == 'cnn_autoencoder':
             for da in data_augmentation:
@@ -139,3 +144,20 @@ for dataset in ["tunnel", "corridor"]:
                                    f'--small_cnn_first_output_channels {fm} ' \
                                    f'--small_cnn_growth_rate {gf}'
                         print(call_str)
+        if model_type == 'small_cnn_dense_blocks':
+            for da in data_augmentation:
+                for gr in dense_blocks_growth_rates:
+                    call_str = f'sbatch train_{dataset}.sh ' \
+                               f'--use_gpu ' \
+                               f'--output_path ' \
+                               f'{output_path}/{dataset}/{model_type}/learning_rate_{learning_rate}/growth_rate_{gr}/ ' \
+                               f'--name n ' \
+                               f'--type {model_type} ' \
+                               f'--batch_size {batch_size} ' + \
+                               f'--data_augmentation' * da + \
+                               f'--learning_rate {learning_rate} ' \
+                               f'--epoch_count {epoch_count} ' \
+                               f'--weight_decay {weight_decay} ' \
+                               f'--small_cnn_dense_block_kernel_size {3} ' \
+                               f'--small_cnn_dense_block_growth_rate {gr}'
+                    print(call_str)
