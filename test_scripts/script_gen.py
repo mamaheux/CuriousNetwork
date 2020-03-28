@@ -64,41 +64,71 @@ for dataset in ["tunnel", "corridor"]:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh --use_gpu --output_path {output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/ ' \
-                                   f'--name n --type {model_type} ' \
-                                   f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
-                                   f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
-                                   f'--cnn_autoencoder_starting_feature_map {fm} --cnn_autoencoder_growth_factor {gf} ' \
+                        call_str = f'sbatch train_{dataset}.sh ' \
+                                   f'--use_gpu ' \
+                                   f'--output_path ' \
+                                       f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
+                                       f'growth_factor_{gf}/ '\
+                                   f'--name n --type {model_type} '\
+                                   f'--batch_size {batch_size} ' +\
+                                   f'--data_augmentation' * da +\
+                                   f'--learning_rate {learning_rate} '\
+                                   f'--epoch_count {epoch_count} '\
+                                   f'--weight_decay {weight_decay} '\
+                                   f'--cnn_autoencoder_starting_feature_map {fm} '\
+                                   f'--cnn_autoencoder_growth_factor {gf} '\
                                    f'--cnn_autoencoder_kernel_size {3}'
                         print(call_str)
         if model_type == 'cnn_vae':
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh --use_gpu --output_path {output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/growth_factor_{gf}/ ' \
+                        call_str = f'sbatch train_{dataset}.sh ' \
+                                   f'--use_gpu ' \
+                                   f'--output_path ' \
+                                       f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
+                                       f'growth_factor_{gf}/ ' \
                                    f'--name n --type {model_type} ' \
-                                   f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
-                                    f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
-                                   f'--cnn_autoencoder_starting_feature_map {fm} --cnn_autoencoder_growth_factor {gf} ' \
+                                   f'--batch_size {batch_size} ' +\
+                                   f'--data_augmentation ' * da +\
+                                   f'--learning_rate {learning_rate} ' \
+                                   f'--epoch_count {epoch_count} ' \
+                                   f'--weight_decay {weight_decay} ' \
+                                   f'--cnn_autoencoder_starting_feature_map {fm} ' \
+                                   f'--cnn_autoencoder_growth_factor {gf} ' \
                                    f'--cnn_autoencoder_kernel_size {3}'
                         print(call_str)
         if model_type == 'vgg16_backend_autoencoder':
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh --use_gpu --output_path {output_path}/{dataset}/{model_type}/data_augmentation_{da}/ ' \
-                                   f'--name n --type {model_type} ' \
-                                   f'--batch_size {batch_size}' + f'--data_augmentation' * da + f' --learning_rate {learning_rate} ' \
+                        call_str = f'sbatch train_{dataset}.sh ' \
+                                   f'--use_gpu ' \
+                                   f'--output_path {output_path}/{dataset}/{model_type}/data_augmentation_{da}/ ' \
+                                   f'--name n ' \
+                                   f'--type {model_type} ' \
+                                   f'--batch_size {batch_size} ' +\
+                                   f'--data_augmentation' * da + \
+                                   f'--learning_rate {learning_rate} ' \
                                                                                                 f'--epoch_count {epoch_count} --weight_decay {weight_decay}'
                         print(call_str)
         if model_type == 'small_cnn':
             for da in data_augmentation:
                 for fm in small_cnn_starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh --use_gpu --output_path {output_path}/{dataset}/{model_type}/{learning_rate}/first_output_channels_{fm}/growth_rate_{gf}/ ' \
-                                   f'name n --type {model_type} ' \
-                                   f'--batch_size {batch_size}' + f'--data_augmentation'* da + f' --learning_rate {learning_rate} ' \
-                                   f'--epoch_count {epoch_count} --weight_decay {weight_decay} ' \
-                                   f'--small_cnn_kernel_size {3} --small_cnn_first_output_channels {fm} ' \
+                        call_str = f'sbatch train_{dataset}.sh ' \
+                                   f'--use_gpu ' \
+                                   f'--output_path ' \
+                                       f'{output_path}/{dataset}/{model_type}/learning_rate_{learning_rate}/' \
+                                       f'first_output_channels_{fm}/growth_rate_{gf}/ ' \
+                                   f'--name n ' \
+                                   f'--type {model_type} ' \
+                                   f'--batch_size {batch_size} ' +\
+                                   f'--data_augmentation' * da +\
+                                   f'--learning_rate {learning_rate} ' \
+                                   f'--epoch_count {epoch_count} ' \
+                                   f'--weight_decay {weight_decay} ' \
+                                   f'--small_cnn_kernel_size {3} ' \
+                                   f'--small_cnn_first_output_channels {fm} ' \
                                    f'--small_cnn_growth_rate {gf}'
                         print(call_str)
