@@ -6,7 +6,7 @@ test_path = ''
 output_path = '~/CuriousNetwork_out'
 model_name = ''
 
-model_types = ['cnn_autoencoder', 'cnn_vae', 'small_cnn', 'small_cnn_dense_blocks']  # 'vgg16_backend_autoencoder'
+model_types = ['cnn_autoencoder', 'cnn_vae', 'small_cnn', 'small_cnn_dense_blocks', 'vgg16_backend_autoencoder']
 datasets = ["tunnel", "corridor"]
 
 batch_size = 20
