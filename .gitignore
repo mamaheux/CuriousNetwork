@@ -134,3 +134,4 @@ dataset/
 # Project specific files
 tools/labeling/test.csv
 dataset.tar
+test_scripts/slur*.out
