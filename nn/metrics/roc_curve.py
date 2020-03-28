@@ -35,7 +35,10 @@ class RocCurve:
             positive_count += np.sum(annotation == 1)
             negative_count += np.sum(annotation == 0)
 
-            error = model(image.unsqueeze(0)).detach().numpy()
+            if torch.cuda.is_available() and use_gpu:
+                error = model(image.unsqueeze(0)).cpu().detach().numpy()
+            else:
+                error = model(image.unsqueeze(0)).detach().numpy()
             error = np.sqrt(error)
 
             for threshold in self._thresholds:
