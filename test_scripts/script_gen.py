@@ -31,41 +31,6 @@ small_cnn_kernel_size = 3
 # small cnn dense blocks
 dense_blocks_growth_rates = [2, 4, 8, 16, 32]
 
-"""
---use_gpu
---train_path
---output_path
---test_path
---output_path
---name
-
---type
---batch_size
---data_augmentation
---learning_rate
---epoch_count
---weight_decay
-
-# cnn_autoencoder arguments
---cnn_autoencoder_starting_feature_map
---cnn_autoencoder_growth_factor
---cnn_autoencoder_kernel_size
-
-# cnn_vae arguments
---cnn_vae_starting_feature_map
---cnn_vae_growth_factor
---cnn_vae_kernel_size
-
-# vgg16_backend_autoencoder arguments
---vgg16_backend_autoencoder_train_backend
-
-# small_cnn arguments
---small_cnn_kernel_size
---small_cnn_first_output_channels
---small_cnn_growth_rate
-
-"""
-
 for dataset in datasets:
     for model_type in model_types:
         if model_type == 'cnn_autoencoder':
@@ -158,6 +123,6 @@ for dataset in datasets:
                                f'--learning_rate {learning_rate} ' \
                                f'--epoch_count {epoch_count} ' \
                                f'--weight_decay {weight_decay} ' \
-                               f'--small_cnn_dense_block_kernel_size {3} ' \
-                               f'--small_cnn_dense_block_growth_rate {gr}'
+                               f'--small_cnn_dense_blocks_kernel_size {3} ' \
+                               f'--small_cnn_dense_blocks_growth_rate {gr}'
                     print(call_str)
