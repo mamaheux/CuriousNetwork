@@ -44,7 +44,7 @@ for dataset in datasets:
                                        f'growth_factor_{gf}/ '\
                                    f'--name n --type {model_type} '\
                                    f'--batch_size {batch_size} ' +\
-                                   f'--data_augmentation' * da +\
+                                   f'--data_augmentation ' * da +\
                                    f'--learning_rate {learning_rate} '\
                                    f'--epoch_count {epoch_count} '\
                                    f'--weight_decay {weight_decay} '\
@@ -83,8 +83,8 @@ for dataset in datasets:
                                    f'--name n ' \
                                    f'--type {model_type} ' \
                                    f'--batch_size {batch_size} ' +\
-                                   f'--data_augmentation' * da +\
-                                   f'--vgg16_backend_autoencoder_train_backend' * tb +\
+                                   f'--data_augmentation ' * da +\
+                                   f'--vgg16_backend_autoencoder_train_backend ' * tb +\
                                    f'--learning_rate {learning_rate} ' \
                                    f'--epoch_count {epoch_count} ' \
                                    f'--weight_decay {weight_decay}'
@@ -101,7 +101,7 @@ for dataset in datasets:
                                    f'--name n ' \
                                    f'--type {model_type} ' \
                                    f'--batch_size {batch_size} ' +\
-                                   f'--data_augmentation' * da +\
+                                   f'--data_augmentation ' * da +\
                                    f'--learning_rate {learning_rate} ' \
                                    f'--epoch_count {epoch_count} ' \
                                    f'--weight_decay {weight_decay} ' \
@@ -119,7 +119,7 @@ for dataset in datasets:
                                f'--name n ' \
                                f'--type {model_type} ' \
                                f'--batch_size {batch_size} ' + \
-                               f'--data_augmentation' * da + \
+                               f'--data_augmentation ' * da + \
                                f'--learning_rate {learning_rate} ' \
                                f'--epoch_count {epoch_count} ' \
                                f'--weight_decay {weight_decay} ' \
