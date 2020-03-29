@@ -136,3 +136,4 @@ tools/labeling/test.csv
 dataset.tar
 test_scripts/slur*.out
 nn/models/checkpoints/*
+test_scripts/done_slurms.txt
