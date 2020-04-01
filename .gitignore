@@ -143,4 +143,4 @@ rapport/*.pdf
 rapport/*.bib
 rapport/*.bst
 rapport/*.synctex.gz
-
+rapport/*.aux

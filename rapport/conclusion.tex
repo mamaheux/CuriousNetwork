@@ -3,34 +3,11 @@
 \subsection{Modification dans le code}
     Un import supplémentaire a été invoqué afin de simplifier les opérations d'augmentation de données:\\
     
-    \begin{lstlisting}[language=python]
-    import torchvision.transforms as transforms
-    \end{lstlisting}
-    
     Le code suivant a été ajouté pour définir le transformateur des données d'entraînement: \\
-    
-    \begin{lstlisting}[language=python]
-    train_transform = base_transform
-    if args.data_aug:
-        train_transform = transforms.Compose([
-            transforms.RandomRotation(10),
-            transforms.ColorJitter(brightness=0, contrast=0.2, 
-                                   saturation=0.2, hue = 0.2),
-            transforms.RandomHorizontalFlip(p=0.2),
-            transforms.RandomResizedCrop(32),
-            transforms.ToTensor(),
-            transforms.Normalize((0.5, 0.5, 0.5), (0.5, 0.5, 0.5))])
-    \end{lstlisting}
     
     La commande \textit{RandomRotation} permet d'appliquer une rotation aléatoire entre 0 degré et la valeur passée en paramètre. \textit{ColorJitter} permet d'ajouter une variance aléatoire sur la couleur des images. \textit{RandomHorizontalFlip} permet d'ajouter d'effectuer une inversion horizontale selon une probabilité passée en paramètre. Finalement, \textit{RandomResizedCrop} permet d'appliquer un recadrage aléatoire sur la photo et un redimensionnement selon le paramètre passé.\\
     
     Les jeux de données d'entraînement ont été chargés en spécifiant le transformateur défini précédemment:    
-    \begin{lstlisting}[language=python]
-    train_set = datasets.CIFAR10(root='../data', train=True, 
-                download=True, transform=train_transform)
-    train_set = datasets.SVHN(root='../data', split='train',
-                download=True, transform=train_transform)        
-    \end{lstlisting}
     
     Ces transformateurs sont utilisés pour valider l'effet de l'augmentation de données sur la justesse d'apprentissage sur le jeu d'entraînement.
     
@@ -38,54 +15,9 @@
     Comme attendu, les résultats de l'entraînement sans augmentation de données causent un surentraînement évident. On voit également que la justesse de la courbe de validation a stagné à partir des environs de la dixième époque.
     \begin{figure}[H]
         \centering 
-        \includegraphics[width=15cm]{images/cnn_vanilla_cifar10.png}
+        %\includegraphics[]{}
         \caption{Résultat de l'entraînement sur cifar10 du CNN vanilla sans augmentation de données}
     \end{figure}
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/cnn_vanilla_svhn.png}
-        \caption{Résultat de l'entraînement sur SVHN du CNN vanilla sans augmentation de données}
-    \end{figure}
-    
-    On constate que l'utilisation d'augmentation de données permet d'éviter le surentraînement. S'il y avait eu plus d'époques, la justesse en validation aurait été meilleure que celle dans le cas sans augmentation de données.
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/cnn_vanilla_cifar10_data_aug.png}
-        \caption{Résultat de l'entraînement sur cifar10 du CNN vanilla avec augmentation de données}
-    \end{figure}
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/cnn_vanilla_svhn_data_aug.png}
-        \caption{Résultat de l'entraînement sur SVHN du CNN vanilla avec augmentation de données}
-    \end{figure}
-
-\begin{landscape}
-    \section{Numéro 3}
-        À la fin du réseau, il y a un \textit{softmax}. Il n'est pas dans le schéma, car il n'est pas dans la classe du réseau.
-        \begin{figure}[H]
-            \centering 
-            \includegraphics[width=22cm]{images/N3_complet.png}
-            \caption{Architecture de IFT725\_Net}
-        \end{figure}
-    
-        \begin{figure}[H]
-            \centering 
-            \includegraphics[width=22cm]{images/N3_dense.png}
-            \caption{Architecture d'un bloc dense}
-        \end{figure}
-    
-        \begin{figure}[H]
-            \centering 
-            \includegraphics[width=22cm]{images/N3_residuel.png}
-            \caption{Architecture d'un bloc résiduel}
-        \end{figure}
-    
-        \begin{figure}[H]
-            \centering 
-            \includegraphics[width=22cm]{images/N3_bottleneck.png}
-            \caption{Architecture d'un bloc \textit{bottleneck}}
-        \end{figure}    
-\end{landscape}
 
 \pagebreak
 \section{Numéro 4}
@@ -94,31 +26,17 @@
     
     Le code suivant a été ajouté pour définir le transformateur des données d'entraînement: \\
     
-    \begin{lstlisting}[language=python]
-    acdc_train_transform = acdc_base_transform
-    if args.data_aug:    
-        acdc_train_transform = transforms.Compose([
-        AcdcDataAugmentationTransform(10, 0.2, 256),
-        transforms.ToTensor()])
-    \end{lstlisting}
-    
     Les jeux de données d'entraînement ont été chargés en spécifiant le transformateur défini précédemment:    
-    \begin{lstlisting}[language=python]
-    train_set = HDF5Dataset('train', hdf5_file,
-        transform=acdc_train_transform)
-    test_set = HDF5Dataset('test', hdf5_file,
-        transform=acdc_base_transform)    
-    \end{lstlisting}
 
-\begin{landscape}
+%\begin{landscape}
     \subsection{Architecture}
         À la fin du réseau, il y a un \textit{softmax}. Il n'est pas dans le schéma, car il n'est pas dans la classe du réseau. \(N_A\) correspond à la profondeur du UNET en ne comptant pas le blob de transition (nombre de \textit{MaxPool} ou nombre de \textit{ConvTranspose}). \(N_B\) correspond au nombre de répétitions des sous-ensembles de blocs constitués d'un bloc dense, suivi d'un bloc résiduel. Ces sous-ensembles de blocs composent les blocs de contraction et les blocs d'expansion. La définition du bloc dense et du bloc résiduel est donnée à la section précédente.
         \begin{figure}[H]
             \centering 
-            \includegraphics[width=22cm]{images/N4_complet.png}
+            %\includegraphics[]{}
             \caption{Architecture de IFT725\_UNET}
         \end{figure}
-\end{landscape}
+%\end{landscape}
 
 \subsection{Résultats de la recherche d’hyperparamètres}
     Le tableau suivant présente les résultats de la recherche d'hyperparamètres. La meilleure configuration obtient une justesse de validation de 85,4 \% (\(L_R=0,001\), \(N_A=5\) \(N_B=1\) \(A_d =\) Non). Il est aussi possible d'affirmer que augmenter la valeur de \(N_B\) réduit la justesse de validation et qu'augmenter \(N_A\) augmente la justesse de validation. Lorsque l'augmentation des données est activée, le meilleur taux d'apprentissage est de 0,002, tandis que le meilleur taux d'apprentissage est de 0,001 sans l'augmentation des données. Normalement, l'augmentation des données devrait améliorer la justesse de validation, mais ce n'est pas le cas dans nos résultats. Ceci est expliqué à la section suivante.
@@ -140,42 +58,6 @@
         0,001 & 5 & 2 & Non & 84,4\\
         0,001 & 5 & 3 & Non & 84,0\\
         
-        0,002 & 3 & 1 & Non & 84,4\\
-        0,002 & 3 & 2 & Non & 59,3\\
-        0,002 & 3 & 3 & Non & 84,3\\
-        
-        0,002 & 4 & 1 & Non & 84,6\\
-        0,002 & 4 & 2 & Non & 84,4\\
-        0,002 & 4 & 3 & Non & 84,6\\
-        
-        0,002 & 5 & 1 & Non & 84,8\\
-        0,002 & 5 & 2 & Non & 84,5\\
-        0,002 & 5 & 3 & Non & 84,1\\
-        
-        
-        0,001 & 3 & 1 & Oui & 73,3\\
-        0,001 & 3 & 2 & Oui & 70,8\\
-        0,001 & 3 & 3 & Oui & 68,8\\
-        
-        0,001 & 4 & 1 & Oui & 71,2\\
-        0,001 & 4 & 2 & Oui & 72,2\\
-        0,001 & 4 & 3 & Oui & 67,1\\
-        
-        0,001 & 5 & 1 & Oui & 72,2\\
-        0,001 & 5 & 2 & Oui & 68,5\\
-        0,001 & 5 & 3 & Oui & -\\
-        
-        0,002 & 3 & 1 & Oui & 79,3\\
-        0,002 & 3 & 2 & Oui & 76,5\\
-        0,002 & 3 & 3 & Oui & 77,8\\
-        
-        0,002 & 4 & 1 & Oui & 82,0\\
-        0,002 & 4 & 2 & Oui & 77,0\\
-        0,002 & 4 & 3 & Oui & -\\
-        
-        0,002 & 5 & 1 & Oui & 80,5\\
-        0,002 & 5 & 2 & Oui & 76,5\\
-        0,002 & 5 & 3 & Oui & -\\            
         \hline
     \end{longtable}
 
@@ -184,194 +66,6 @@
 
     \begin{figure}[H]
         \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_1_data_aug_0/fig1.png}
+        %\includegraphics[]{}
         \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_3_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=3\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_4_unet_res_dense_size_1_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=4\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_4_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=4\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_5_unet_res_dense_size_1_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=5\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_5_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=5\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_5_unet_res_dense_size_3_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=5\), \(N_B=3\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_1_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_3_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=3\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_4_unet_res_dense_size_1_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=4\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_4_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=4\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_4_unet_res_dense_size_3_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=4\), \(N_B=3\), \(A_d= \) Non}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_5_unet_res_dense_size_1_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=5\), \(N_B=1\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_5_unet_res_dense_size_2_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=5\), \(N_B=2\), \(A_d= \) Non}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_5_unet_res_dense_size_3_data_aug_0/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=5\), \(N_B=3\), \(A_d= \) Non}
-    \end{figure}
-
-
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=2\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_3_unet_res_dense_size_3_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=3\), \(N_B=3\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_4_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=4\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_4_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=4\), \(N_B=2\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_4_unet_res_dense_size_3_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=4\), \(N_B=3\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_5_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=5\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.001_unet_depth_5_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.001\), \(N_A=5\), \(N_B=2\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=2\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_3_unet_res_dense_size_3_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=3\), \(N_B=3\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_4_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=4\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_4_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=4\), \(N_B=2\), \(A_d= \) Oui}
-    \end{figure}
-
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_5_unet_res_dense_size_1_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=5\), \(N_B=1\), \(A_d= \) Oui}
-    \end{figure}
-    
-    \begin{figure}[H]
-        \centering 
-        \includegraphics[width=15cm]{images/no_4/lr_0.002_unet_depth_5_unet_res_dense_size_2_data_aug_1/fig1.png}
-        \caption{Courbes d’apprentissage - \(L_R=0.002\), \(N_A=5\), \(N_B=2\), \(A_d= \) Oui}
     \end{figure}
