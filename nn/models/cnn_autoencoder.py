@@ -6,38 +6,44 @@ from models.base_model import BaseModel
 
 # Receptive field of the encoder (if kernel_size=3) : 60x60
 class CnnAutoencoder(BaseModel):
-    def __init__(self, ini_feature_maps=4, feature_maps_growth_factor=2, kernel_size=3):
+    def __init__(self, ini_feature_maps=4, feature_maps_growth_factor=2, kernel_size=3, useBatchNorm=False):
         super(CnnAutoencoder, self).__init__()
 
         if kernel_size % 2 == 0:
             raise ValueError('Kernel size must be an odd number')
 
-        cnn_padding = kernel_size // 2;
+        cnn_padding = kernel_size // 2
         self._encoder = torch.nn.Sequential(
             torch.nn.Conv2d(3, ini_feature_maps, kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps,
                             ini_feature_maps * feature_maps_growth_factor ** 1,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 1) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.MaxPool2d(2, stride=2),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 1,
                             ini_feature_maps * feature_maps_growth_factor ** 2,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 2,
                             ini_feature_maps * feature_maps_growth_factor ** 3,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 3) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.MaxPool2d(3, stride=3),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 3,
                             ini_feature_maps * feature_maps_growth_factor ** 4,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 4,
                             ini_feature_maps * feature_maps_growth_factor ** 5,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 5) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.MaxPool2d(4, stride=4)
         )
 
@@ -46,22 +52,27 @@ class CnnAutoencoder(BaseModel):
                                      ini_feature_maps * feature_maps_growth_factor ** 4,
                                      kernel_size, stride=4, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 4,
                             ini_feature_maps * feature_maps_growth_factor ** 3,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 3) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.ConvTranspose2d(ini_feature_maps * feature_maps_growth_factor ** 3,
                                      ini_feature_maps * feature_maps_growth_factor ** 2,
                                      kernel_size, stride=3, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps * feature_maps_growth_factor ** 2,
                             ini_feature_maps * feature_maps_growth_factor ** 1,
                             kernel_size, stride=1, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps * feature_maps_growth_factor ** 1) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.ConvTranspose2d(ini_feature_maps * feature_maps_growth_factor ** 1,
                                      ini_feature_maps,
                                      kernel_size, stride=2, padding=cnn_padding),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(ini_feature_maps) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(ini_feature_maps, 3, kernel_size, stride=1, padding=0),
             torch.nn.Sigmoid()
         )

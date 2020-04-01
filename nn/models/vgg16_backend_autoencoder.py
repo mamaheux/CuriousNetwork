@@ -8,7 +8,7 @@ import curious_dataset
 
 # Receptive field of the backend : 60x60
 class Vgg16BackendAutoencoder(BaseModel):
-    def __init__(self, train_backend=False):
+    def __init__(self, train_backend=False, useBatchNorm=False):
         super(Vgg16BackendAutoencoder, self).__init__()
 
         vgg16 = models.vgg16(pretrained=True)
@@ -25,20 +25,26 @@ class Vgg16BackendAutoencoder(BaseModel):
             torch.nn.BatchNorm2d(backend_output_channels),
             torch.nn.Conv2d(backend_output_channels, backend_output_channels // 2, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 2, backend_output_channels // 4, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 4, backend_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 8) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 8, backend_output_channels // 16, 1, stride=1, padding=0)
         )
 
         self._decoder = torch.nn.Sequential(
             torch.nn.Conv2d(backend_output_channels // 16, backend_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 8) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 8, backend_output_channels // 4, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 4, backend_output_channels // 2, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(backend_output_channels // 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(backend_output_channels // 2, backend_output_channels, 1, stride=1, padding=0)
         )
 

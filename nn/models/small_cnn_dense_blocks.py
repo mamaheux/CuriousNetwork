@@ -5,7 +5,7 @@ from models.cnn_blocks import DenseBlock
 
 
 class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
-    def __init__(self, kernel_size=3, growth_rate=2):
+    def __init__(self, kernel_size=3, growth_rate=2, useBatchNorm=False):
         super(SmallCnnWithAutoencoderDenseBlocks, self).__init__()
         if kernel_size % 2 == 0:
             raise ValueError('Invalid kernel size')
@@ -32,21 +32,28 @@ class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
         self._encoder = torch.nn.Sequential(
             torch.nn.Conv2d(cnn_output_channels, cnn_output_channels // 2, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 2, cnn_output_channels // 4, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 4, cnn_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 8) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 8, cnn_output_channels // 16, 1, stride=1, padding=0),
-            torch.nn.ReLU(True)
+            torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 16) if useBatchNorm else torch.nn.Sequential(),
         )
 
         self._decoder = torch.nn.Sequential(
             torch.nn.Conv2d(cnn_output_channels // 16, cnn_output_channels // 8, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 8) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 8, cnn_output_channels // 4, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 4) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 4, cnn_output_channels // 2, 1, stride=1, padding=0),
             torch.nn.ReLU(True),
+            torch.nn.BatchNorm2d(cnn_output_channels // 2) if useBatchNorm else torch.nn.Sequential(),
             torch.nn.Conv2d(cnn_output_channels // 2, cnn_output_channels, 1, stride=1, padding=0)
         )
 

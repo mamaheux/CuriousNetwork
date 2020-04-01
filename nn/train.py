@@ -35,6 +35,9 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
+    # batchNorm test
+    parser.add_argument('--use_batchNorm', action='store_true')
+
     # cnn_autoencoder arguments
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
                         type=int, help='Choose the number of starting feature maps for the auto encoder',
