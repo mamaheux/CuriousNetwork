@@ -11,3 +11,57 @@
     Pour mesurer les performances des réseaux de neurones sur les données de validation et de test, l'utilisation des courbes ROC a été choisi puisque notre problème équivaut à un problème de classification deux classes où la classe est déterminée à l'aide d'un seuil. La courbe ROC est une bonne métrique dans ce cas. Pour permettre la comparaison des réseaux de neurones avec différents hyperparamètres et établir le meilleur type de réseau de neurones pour la situation, l'aire sous la courbe ROC a été utilisée. Plus l'aire sous la courbe est grande, plus que le réseau est bon. Pour calculer la courbe ROC, le nombre de vrais positifs et de faux positifs a été calculé pour différentes valeurs de seuil.
 
 \subsection{Architecture des modèles}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=12cm]{images/Architecture_DenseBlock.png}
+        \caption{Architecture d'un bloc dense}
+        \label{fig:architecture_bloc_dense}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=17cm]{images/Architecture_FeatureAutoencoder.png}
+        \caption{Architecture de l'auto-encodeur des caractéristiques}
+        \label{fig:architecture_autoencoder_caracteristique}
+    \end{figure}
+
+\subsubsection{Auto-encodeur à base de couche convolutive appliqué sur l'image}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=17cm]{images/Architecture_CnnAutoencoder.png}
+        \caption{Architecture de l'auto-encodeur à base de couche convolutive appliqué sur l'image}
+        \label{fig:architecture_cnn_autoencoder}
+    \end{figure}
+
+\subsubsection{Auto-encodeur variationnel à base de couche convolutive appliqué sur l'image}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=17cm]{images/Architecture_CnnVae.png}
+        \caption{Architecture de l'auto-encodeur variationnel à base de couche convolutive appliqué sur l'image}
+        \label{fig:architecture_cnn_vae}
+    \end{figure}
+
+\subsubsection{Réseau de neurones convolutif extrayant des caractéristiques}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=17cm]{images/Architecture_SmallCnnWithAutoencoder.png}
+        \caption{Architecture du réseau de neurones convolutif extrayant des caractéristiques}
+        \label{fig:architecture_small_cnn}
+    \end{figure}
+
+\subsubsection{Réseau de neurones à base de blocs denses extrayant des caractéristiques}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=17cm]{images/Architecture_SmallCnnWithAutoencoderDenseBlocks.png}
+        \caption{Architecture du réseau de neurones à base de blocs denses extrayant des caractéristiques}
+        \label{fig:architecture_small_cnn_dense_bloc}
+    \end{figure}
+
+\subsection{Réseau de neurones utilisant un \textit{backend} VGG16 pour l'extraction des caractéristiques}
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=12cm]{images/Architecture_Vgg16BackendAutoencoder.png}
+        \caption{Architecture du réseau de neurones utilisant un \textit{backend} VGG16 pour l'extraction des caractéristiques}
+        \label{fig:architecture_vgg16}
+    \end{figure}

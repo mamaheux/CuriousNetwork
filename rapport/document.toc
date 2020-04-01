@@ -5,8 +5,13 @@
 \contentsline {section}{\numberline {4}Conception}{5}{section.4}
 \contentsline {subsection}{\numberline {4.1}Choix des m\IeC {\'e}triques}{5}{subsection.4.1}
 \contentsline {subsection}{\numberline {4.2}Architecture des mod\IeC {\`e}les}{6}{subsection.4.2}
-\contentsline {section}{\numberline {5}Entra\IeC {\^\i }nement}{6}{section.5}
-\contentsline {section}{\numberline {6}R\IeC {\'e}sultats}{6}{section.6}
-\contentsline {section}{\numberline {7}Gestion de projet}{6}{section.7}
-\contentsline {section}{\numberline {8}Conclusion}{6}{section.8}
-\contentsline {section}{\numberline {9}Listes des r\IeC {\'e}f\IeC {\'e}rences}{7}{section.9}
+\contentsline {subsubsection}{\numberline {4.2.1}Auto-encodeur \IeC {\`a} base de couche convolutive appliqu\IeC {\'e} sur l'image}{7}{subsubsection.4.2.1}
+\contentsline {subsubsection}{\numberline {4.2.2}Auto-encodeur variationnel \IeC {\`a} base de couche convolutive appliqu\IeC {\'e} sur l'image}{8}{subsubsection.4.2.2}
+\contentsline {subsubsection}{\numberline {4.2.3}R\IeC {\'e}seau de neurones convolutif extrayant des caract\IeC {\'e}ristiques}{9}{subsubsection.4.2.3}
+\contentsline {subsubsection}{\numberline {4.2.4}R\IeC {\'e}seau de neurones \IeC {\`a} base de blocs denses extrayant des caract\IeC {\'e}ristiques}{10}{subsubsection.4.2.4}
+\contentsline {subsection}{\numberline {4.3}R\IeC {\'e}seau de neurones utilisant un \textit {backend} VGG16 pour l'extraction des caract\IeC {\'e}ristiques}{10}{subsection.4.3}
+\contentsline {section}{\numberline {5}Entra\IeC {\^\i }nement}{11}{section.5}
+\contentsline {section}{\numberline {6}R\IeC {\'e}sultats}{11}{section.6}
+\contentsline {section}{\numberline {7}Gestion de projet}{11}{section.7}
+\contentsline {section}{\numberline {8}Conclusion}{11}{section.8}
+\contentsline {section}{\numberline {9}Listes des r\IeC {\'e}f\IeC {\'e}rences}{12}{section.9}

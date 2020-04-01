@@ -2,3 +2,10 @@
 \contentsline {figure}{\numberline {1}{\ignorespaces D\IeC {\'e}finition de la sortie du r\IeC {\'e}seau}}{3}{figure.1}
 \contentsline {figure}{\numberline {2}{\ignorespaces Outil d'annotation des images}}{4}{figure.2}
 \contentsline {figure}{\numberline {3}{\ignorespaces Outil de lecture des images avec l'annotation}}{4}{figure.3}
+\contentsline {figure}{\numberline {4}{\ignorespaces Architecture d'un bloc dense}}{6}{figure.4}
+\contentsline {figure}{\numberline {5}{\ignorespaces Architecture de l'auto-encodeur des caract\IeC {\'e}ristiques}}{6}{figure.5}
+\contentsline {figure}{\numberline {6}{\ignorespaces Architecture de l'auto-encodeur \IeC {\`a} base de couche convolutive appliqu\IeC {\'e} sur l'image}}{7}{figure.6}
+\contentsline {figure}{\numberline {7}{\ignorespaces Architecture de l'auto-encodeur variationnel \IeC {\`a} base de couche convolutive appliqu\IeC {\'e} sur l'image}}{8}{figure.7}
+\contentsline {figure}{\numberline {8}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones convolutif extrayant des caract\IeC {\'e}ristiques}}{9}{figure.8}
+\contentsline {figure}{\numberline {9}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones \IeC {\`a} base de blocs denses extrayant des caract\IeC {\'e}ristiques}}{10}{figure.9}
+\contentsline {figure}{\numberline {10}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones utilisant un \textit {backend} VGG16 pour l'extraction des caract\IeC {\'e}ristiques}}{10}{figure.10}
