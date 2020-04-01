@@ -99,7 +99,7 @@
     \pagenumbering{roman}
     
     % Table of contents
-    %\tableofcontents
+    \tableofcontents
     \pagebreak
     
     % List of figures
@@ -107,15 +107,15 @@
     \renewcommand{\figurename}{Figure}
     \renewcommand{\cftfigpresnum}{Figure }
     \renewcommand{\cftfignumwidth}{2cm}
-    %\listoffigures
-    %\pagebreak
+    \listoffigures
+    \pagebreak
 %    
 %    % List of tables
     \renewcommand{\tablename}{Tableau}
     \renewcommand{\cfttabpresnum}{Tableau }
     \renewcommand{\cfttabnumwidth}{2cm}
-%    \listoftables
-%    \pagebreak
+    \listoftables
+    \pagebreak
     
     % List of abbreviations
     %\renewcommand{\nomname}{Liste des symboles et abréviations}
@@ -123,27 +123,23 @@
     %\printnomenclature
     %\pagebreak
     
-    % Introduction
     \pagenumbering{arabic}
-    \input{mise_en_context}
-
-    % Database creation
-    \pagenumbering{arabic}
-    \input{database}
-    
-    % Training & results
-    \pagenumbering{arabic}
-    \input{training_and_results}
-    
-    % Project management
-    \pagenumbering{arabic}
-    \input{project_management}
-    
-    % Conclusion
-    \pagenumbering{arabic}
+    \input{mise_en_contexte}
+    \input{base_de_donnees}
+    \input{conception}
+    \input{entrainements_resultats}
+    \input{gestion_de_projet}
     \input{conclusion}
     
     \pagebreak
+    \section{Listes des références}
+    [1]     Ferland, F., Létourneau, D., Aumont, A., Frémy, J, Legault, M.-A., Lauria, M., Michaud,         F. (2012), "Natural interaction design of a humanoid robot," Journal of Human-Robot         Interaction, 1 (2), 118-134.\\
+    
+    [2]    Michaud, F., Ferland, F., Létourneau, D., Legault, M.-A., Lauria, M. (2010), “Toward         autonomous, compliant, omnidirectional humanoid robots for natural interaction in real         life settings,” Paladyn Behavioral Robotic Journal, 1(1): 57-65.\\
+    
+    [3]    Michaud, F., Côté, C., Létourneau, D., Brosseau, Y., Valin, J.-M., Beaudry, É.,             Raïevsky, C., Ponchon, Moisan, P., Lepage, P., Morin, Y., Gagnon, F., Giguère, P.,             Roux, M.-A., Caron, S., Frenette, P., Kabanza, F. (2007), “Spartacus attending the             2005 AAAI Conference,” to be published in Autonomous Robots, Special Issue on the         AAAI Mobile Robot Competitions and Exhibition.\\
+    
+    [4]    D. Pathak, P. Agrawal, A. A. Efros, et T. Darrell, “Curiosity-driven Exploration by             Self-supervised Prediction,” arXiv:1705.05363, mai 2017.\\\\
     
     % Appendices
     %\renewcommand{\appendixname}{Annexe}
