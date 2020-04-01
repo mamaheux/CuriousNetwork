@@ -18,3 +18,19 @@
         \caption{Outil de lecture des images avec l'annotation}
         \label{fig:outil_lecture}
     \end{figure}
+
+    Le tableau \ref{tab:nb_image_bd} présente le nombre d'images d'entraînement, de validation et de test pour chaque base de données. Puisque l'annotation des images est une tâche longue et fastidieuse et ne fait pas partie du cadre du cours, il a été décidé d'annoter environ 1 000 images par base de données. Ce nombre a été jugé comme suffisant pour avoir une bonne idée de la performance des réseaux sans toutefois rendre l'annotation trop longue. Il a été préféré de mettre plus d'images en test qu'en validation pour nous permettre d'avoir de bonnes métriques de test. De plus, les images de validation et de test sont semblables, mais n'ont pas le même contenu dans le but de ne pas fausser nos résultats de tests suite à un surentraînement des hyperparamètres sur les images. 
+    
+    \begin{table}[H]
+        \centering
+        \caption{Nombre d'images pour chaque base de données}
+        \label{tab:nb_image_bd}
+        \begin{tabular}{p{4cm}p{3cm}p{2.25cm}p{2.25cm}}
+            \midrule
+            Base de données &  Nombre d'images d'entraînement & Nombre d'images de validation & Nombre d'images de test\\
+            \midrule\midrule
+            Tunnel & 24 526 & 300 & 815\\
+            Faculté de génie & 21 079 & 200 & 691\\
+            \midrule
+        \end{tabular}
+    \end{table}

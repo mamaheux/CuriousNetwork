@@ -10,6 +10,7 @@
 \contentsline {subsubsection}{\numberline {4.2.3}R\IeC {\'e}seau de neurones convolutif extrayant des caract\IeC {\'e}ristiques}{9}{subsubsection.4.2.3}
 \contentsline {subsubsection}{\numberline {4.2.4}R\IeC {\'e}seau de neurones \IeC {\`a} base de blocs denses extrayant des caract\IeC {\'e}ristiques}{10}{subsubsection.4.2.4}
 \contentsline {subsection}{\numberline {4.3}R\IeC {\'e}seau de neurones utilisant un \textit {backend} VGG16 pour l'extraction des caract\IeC {\'e}ristiques}{10}{subsection.4.3}
+\contentsline {subsection}{\numberline {4.4}Augmentation des donn\IeC {\'e}es}{11}{subsection.4.4}
 \contentsline {section}{\numberline {5}Entra\IeC {\^\i }nement}{11}{section.5}
 \contentsline {section}{\numberline {6}R\IeC {\'e}sultats}{11}{section.6}
 \contentsline {section}{\numberline {7}Gestion de projet}{11}{section.7}
