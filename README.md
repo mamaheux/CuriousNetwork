@@ -8,10 +8,10 @@ its attention on such new elements of its environment. It runs on python 3.
 TBD
 
 ## Annotation tool
-[See the README](tools/)
+[](tools/)
 
 ## Neural Networks Models
-[See the README](nn/)
+[](nn/)
 
 ## Test scripts
-[See the README](tools/)
+[](tools/)
