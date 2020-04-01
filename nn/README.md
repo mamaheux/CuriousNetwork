@@ -1,5 +1,5 @@
-# models
-This are the models implemented and tested for the Curious Network project. The can be trained then
+# Neural Networks
+These are the models implemented and tested for the Curious Network project. The can be trained then
 called from run.py in order to test the "curiosity singal" (i.e. the error on the re-encoded annotated pictures).
 
 ## Create a virtual environment
