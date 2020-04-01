@@ -137,3 +137,10 @@ dataset.tar
 test_scripts/slur*.out
 nn/models/checkpoints/*
 test_scripts/done_slurms.txt
+rapport/*.nlo
+rapport/*.out
+rapport/*.pdf
+rapport/*.bib
+rapport/*.bst
+rapport/*.synctex.gz
+
