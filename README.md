@@ -11,4 +11,7 @@ TBD
 [See the README](tools/README.md)
 
 ## Neural Networks Models
-[See the README](models/README.md)
+[See the README](nn/models/README.md)
+
+## Test scripts
+[See the README](tools/README.md)
