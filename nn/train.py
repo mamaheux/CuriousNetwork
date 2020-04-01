@@ -72,6 +72,7 @@ def main():
 
 
 def train(args):
+    os.environ['TORCH_HOME'] = 'models'
     model, normalization, roc_curve_thresholds = create_model(args.type, args)
 
     if args.data_augmentation:
@@ -101,7 +102,7 @@ def train(args):
                 image = image.cuda()
 
             output = model(image)
-            loss = output.sum() + model.internal_loss()
+            loss = output.sum() + model.internal_loss(use_gpu=args.use_gpu)
 
             optimizer.zero_grad()
             loss.backward()
