@@ -24,7 +24,7 @@ kernel_size = 3
 train_back_end = [0, 1]
 
 # CNN autoencoder & CNN vanilla
-small_cnn_starting_feature_map = [2, 4, 8, 16]
+small_cnn_starting_feature_map = [2, 4, 8]
 small_cnn_growth_factor = [2, 4]
 small_cnn_kernel_size = 3
 
@@ -41,7 +41,7 @@ for dataset in datasets:
                                    f'--use_gpu ' \
                                    f'--output_path ' \
                                        f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
-                                       f'growth_factor_{gf}/ '\
+                                       f'growth_factor_{gf}/data_augmentation_{da}/ '\
                                    f'--name n --type {model_type} '\
                                    f'--batch_size {batch_size} ' +\
                                    f'--data_augmentation ' * da +\
@@ -60,35 +60,34 @@ for dataset in datasets:
                                    f'--use_gpu ' \
                                    f'--output_path ' \
                                        f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
-                                       f'growth_factor_{gf}/ ' \
+                                       f'growth_factor_{gf}/data_augmentation_{da}/ ' \
                                    f'--name n --type {model_type} ' \
                                    f'--batch_size {batch_size} ' +\
                                    f'--data_augmentation ' * da +\
                                    f'--learning_rate {learning_rate} ' \
                                    f'--epoch_count {epoch_count} ' \
                                    f'--weight_decay {weight_decay} ' \
-                                   f'--cnn_autoencoder_starting_feature_map {fm} ' \
-                                   f'--cnn_autoencoder_growth_factor {gf} ' \
-                                   f'--cnn_autoencoder_kernel_size {3}'
+                                   f'--cnn_vae_starting_feature_map {fm} ' \
+                                   f'--cnn_vae_growth_factor {gf} ' \
+                                   f'--cnn_vae_kernel_size {3}'
                         print(call_str)
         if model_type == 'vgg16_backend_autoencoder':
             for da in data_augmentation:
-                for fm in starting_feature_map:
-                    for tb in train_back_end:
-                        call_str = f'sbatch train_{dataset}.sh ' \
-                                   f'--use_gpu ' \
-                                   f'--output_path ' \
-                                       f'{output_path}/{dataset}/{model_type}/' \
-                                       f'data_augmentation_{da}/ ' \
-                                   f'--name n ' \
-                                   f'--type {model_type} ' \
-                                   f'--batch_size {batch_size} ' +\
-                                   f'--data_augmentation ' * da +\
-                                   f'--vgg16_backend_autoencoder_train_backend ' * tb +\
-                                   f'--learning_rate {learning_rate} ' \
-                                   f'--epoch_count {epoch_count} ' \
-                                   f'--weight_decay {weight_decay}'
-                        print(call_str)
+                for tb in train_back_end:
+                    call_str = f'sbatch train_{dataset}.sh ' \
+                               f'--use_gpu ' \
+                               f'--output_path ' \
+                                   f'{output_path}/{dataset}/{model_type}/train_back_end_{tb}/' \
+                                   f'data_augmentation_{da}/ ' \
+                               f'--name n ' \
+                               f'--type {model_type} ' \
+                               f'--batch_size {batch_size} ' +\
+                               f'--data_augmentation ' * da +\
+                               f'--vgg16_backend_autoencoder_train_backend ' * tb +\
+                               f'--learning_rate {learning_rate} ' \
+                               f'--epoch_count {epoch_count} ' \
+                               f'--weight_decay {weight_decay}'
+                    print(call_str)
         if model_type == 'small_cnn':
             for da in data_augmentation:
                 for fm in small_cnn_starting_feature_map:
@@ -96,8 +95,8 @@ for dataset in datasets:
                         call_str = f'sbatch train_{dataset}.sh ' \
                                    f'--use_gpu ' \
                                    f'--output_path ' \
-                                       f'{output_path}/{dataset}/{model_type}/learning_rate_{learning_rate}/' \
-                                       f'first_output_channels_{fm}/growth_rate_{gf}/ ' \
+                                       f'{output_path}/{dataset}/{model_type}/' \
+                                       f'first_output_channels_{fm}/growth_rate_{gf}/data_augmentation_{da}/ ' \
                                    f'--name n ' \
                                    f'--type {model_type} ' \
                                    f'--batch_size {batch_size} ' +\
@@ -115,7 +114,7 @@ for dataset in datasets:
                     call_str = f'sbatch train_{dataset}.sh ' \
                                f'--use_gpu ' \
                                f'--output_path ' \
-                               f'{output_path}/{dataset}/{model_type}/learning_rate_{learning_rate}/growth_rate_{gr}/ ' \
+                               f'{output_path}/{dataset}/{model_type}/growth_rate_{gr}/data_augmentation_{da}/ ' \
                                f'--name n ' \
                                f'--type {model_type} ' \
                                f'--batch_size {batch_size} ' + \
