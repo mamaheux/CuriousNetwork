@@ -1,24 +1,35 @@
 # labeling
-Projet permettant d'annoter les images, ainsi que de jouer les vidéos avec l'annotation.
+This project is an image annotation tool. It allows a user to manually annotate image through a GUI.
+It also allows the user to validate annotation through a video player, which frames are in fact jpeg files.
 
-## Création d'un environnement virtuel
+## Create a virtual environment
 ```bash
 python3 -m venv env
 source env/bin/activate
 ```
 
-## Installation des dépendances
+## Dependencies installation
 ```bash
 source env/bin/activate
 pip install -r requirements.txt
 ```
 
-## Exécution de l'outil d'annotation
+## Launch the annotation tool
 ```bash
 source env/bin/activate
 python labeling_main.py
 ```
-## Exécution de l'outil de lecture des vidéos
+
+#### Using the annotation tool
+|Command|Key|
+|-------------|:-------------:|
+|Previous frame|A|
+|Next frame|D|
+|Annotate a section|left click|
+|Unannotate a section|right click|
+
+
+## Launch the annotation viewer tool
 ```bash
 source env/bin/activate
 python player_main.py

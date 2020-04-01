@@ -1,3 +1,5 @@
+# Project Curious Network
+
 import torch
 import torch.nn.functional as F
 

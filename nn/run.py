@@ -1,12 +1,11 @@
+# Project Curious Network
+# this script fetch a pre-trained model and run series of "classifications" on the sections of the image, trying to
+# detect new elements in the environment. The results can then be used to quantify the model's performance
+
 import argparse
 import os
-
 import numpy as np
-
 import torch
-from torch.autograd import Variable
-
-from barbar import Bar
 
 from models import create_model
 from curious_dataset import CuriousDataset
@@ -60,6 +59,7 @@ def run(args):
     if torch.cuda.is_available() and args.use_gpu:
         model = model.cuda()
 
+    # Fetchs and prepare the pre-trained model
     model.load_state_dict(torch.load(args.weight_path))
     model.eval()
 
