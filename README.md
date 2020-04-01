@@ -12,7 +12,7 @@ TBD
 [Labeling](tools/labeling)
 
 ## Neural Networks Models
-[nn](nn/)
+[Neural Networks/Models](nn/)
 
 ## Test scripts
-[test_scripts](test_scripts/)
+[Test scripts](test_scripts/)
