@@ -5,7 +5,6 @@ import numpy as np
 MAX_FRAME_COUNT = 1000000000
 
 class FileHandler:
-
     def __init__(self, path=os.curdir):
         self._directory = path
         self._frames = glob.glob(os.path.join(path, '*.jpg'))
