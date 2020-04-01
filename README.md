@@ -8,7 +8,8 @@ its attention on such new elements of its environment. It runs on python 3.
 TBD
 
 ## Annotation tool
-[tools](tools/)
+[Video to pictures converter](tools/dataset_mp4_to_jpg)
+[Labeling](tools/labeling)
 
 ## Neural Networks Models
 [nn](nn/)

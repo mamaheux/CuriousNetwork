@@ -1,4 +1,4 @@
-# labeling
+# Labeling
 This project is an image annotation tool. It allows a user to manually annotate image through a GUI.
 It also allows the user to validate annotation through a video player, which frames are in fact jpeg files.
 
