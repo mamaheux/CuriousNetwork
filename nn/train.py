@@ -42,7 +42,7 @@ def main():
 
     # cnn_autoencoder flags
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_autoencoder_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'
@@ -51,7 +51,7 @@ def main():
 
     # cnn_vae flags
     parser.add_argument('--cnn_vae_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_vae_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'

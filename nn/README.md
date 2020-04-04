@@ -1,5 +1,5 @@
 # Neural Networks
-These are the models implemented and tested for the Curious Network project. The can be trained then
+These are the models implemented and tested for the Curious Network project. They can be trained then
 called from run.py in order to test the "curiosity singal" (i.e. the error on the re-encoded annotated pictures).
 
 ## Create a virtual environment
@@ -41,7 +41,7 @@ python train.py    -h, --help            show this help message and exit
                                                 Choose the weight decay
                           --cnn_autoencoder_starting_feature_map CNN_AUTOENCODER_STARTING_FEATURE_MAP
                                                 Choose the number of starting feature maps for the
-                                                auto encoder
+                                                autoencoder
                           --cnn_autoencoder_growth_factor CNN_AUTOENCODER_GROWTH_FACTOR
                                                 Choose the basis of the coefficient by which the
                                                 featuremaps are goind to be multiplied from a layer to
@@ -50,7 +50,7 @@ python train.py    -h, --help            show this help message and exit
                                                 Choose the starting kernel size
                           --cnn_vae_starting_feature_map CNN_VAE_STARTING_FEATURE_MAP
                                                 Choose the number of starting feature maps for the
-                                                auto encoder
+                                                autoencoder
                           --cnn_vae_growth_factor CNN_VAE_GROWTH_FACTOR
                                                 Choose the basis of the coefficient by which the
                                                 featuremaps are goind to be multiplied from a layer to
