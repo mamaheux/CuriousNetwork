@@ -1,3 +1,6 @@
+# Project Curious Network
+# This is the grid displayed on the pictures, creating sections that can be annotated
+
 import numpy as np
 
 from PySide2.QtCore import Qt

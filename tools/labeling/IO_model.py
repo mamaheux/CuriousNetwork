@@ -1,11 +1,14 @@
+# Project Curious Network
+# This class is responsible for managing file I/O operations for the Curious Network's anntoation tool
+
 import os
 import glob
 import numpy as np
 
+# This value will be used for file naming purposes
 MAX_FRAME_COUNT = 1000000000
 
 class FileHandler:
-
     def __init__(self, path=os.curdir):
         self._directory = path
         self._frames = glob.glob(os.path.join(path, '*.jpg'))

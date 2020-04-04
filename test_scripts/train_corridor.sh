@@ -21,6 +21,7 @@ cp ~/CuriousNetwork_fixes/barbar.py .
 
 cd $SLURM_TMPDIR/nn/
 
+# Start the training
 python train.py --train_path $SLURM_TMPDIR/nn/dataset/jpg/corridor_train \
                 --val_path $SLURM_TMPDIR/nn/dataset/jpg/corridor_val \
                 --test_path $SLURM_TMPDIR/nn/dataset/jpg/corridor_test "$@"

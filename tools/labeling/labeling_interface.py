@@ -1,3 +1,6 @@
+# Project Curious Network
+# This class implements the GUI of the annotation tool using QT for python
+
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QKeySequence
 from PySide2.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout, QFileDialog, QLabel
