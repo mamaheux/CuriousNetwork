@@ -16,7 +16,7 @@
     La figure \ref{fig:architecture_bloc_dense} présente l'architecture d'un bloc dense utilisé dans certains réseaux de neurones. Ce bloc peut être configuré à l'aide de \(N_C\) et de \(t\). 
     \begin{figure}[H]
         \centering
-        \includegraphics[width=12cm]{images/Architecture_DenseBlock.png}
+        \includegraphics[width=15cm]{images/Architecture_DenseBlock.png}
         \caption{Architecture d'un bloc dense}
         \label{fig:architecture_bloc_dense}
     \end{figure}
@@ -68,7 +68,7 @@
     La sortie du réseau de neurones utilisant un \textit{backend} VGG16 présenté à la figure \ref{fig:architecture_vgg16} est envoyée à l'entrée de l'auto-encodeur des caractéristiques (figure \ref{fig:architecture_autoencoder_caracteristique}) pour que la sortie de l'auto-encodeur des caractéristiques soit les erreurs de reconstruction des régions. Les 8 premières couches de VGG16, suivi d'un \textit{MaxPool} 8x8 a été utilisé pour obtenir le bon champ récepteur. Il y a l'utilisation d'une \textit{BatchNorm} et d'une interpolation bilinéaire pour les mêmes raisons que le modèle C. La combinaison de ces deux réseaux de neurones sera appelée modèle E dans la suite du document.
     \begin{figure}[H]
         \centering
-        \includegraphics[width=12cm]{images/Architecture_Vgg16BackendAutoencoder.png}
+        \includegraphics[width=15cm]{images/Architecture_Vgg16BackendAutoencoder.png}
         \caption{Architecture du réseau de neurones utilisant un \textit{backend} VGG16 pour l'extraction des caractéristiques}
         \label{fig:architecture_vgg16}
     \end{figure}
