@@ -96,13 +96,28 @@
         \end{tabular}
     \end{table}
 
-\subsubsection{Comparaison entre les réseaux}
+\subsubsection{Comparaison entre les modèles}
     \begin{figure}[H]
         \centering
         \includegraphics[width=12cm]{images/tunnel_roc.png}
         \caption{Courbes ROC - Tunnel}
         \label{fig:tunnel_roc}
     \end{figure}
+
+    \begin{table}[H]
+        \centering
+        \caption{Temps d'exécution moyen sur Tesla K20 - Tunnel}
+        \label{tab:resultat_tunnel_temps_execution}
+        \begin{tabular}{lp{4cm}p{4cm}p{4cm}}
+            \midrule
+            Modèle & Temps d'exécution moyen de la passe avant (ms) & Temps d'exécution moyen de la passe arrière (ms) & Temps d'exécution total moyen (ms)\\
+            \midrule\midrule
+            A & 2,93 & 4,75 & 7,68\\
+            B & 3,65 & 5,86 & 9,51\\
+            E & 3,14 & 2,78 & 5,92\\
+            \midrule
+        \end{tabular}
+    \end{table}
 
 \subsection{Base de données - Faculté de génie}
 
@@ -167,10 +182,28 @@
         \end{tabular}
     \end{table}
 
-\subsubsection{Comparaison entre les réseaux}
+\subsubsection{Comparaison entre les modèles}
     \begin{figure}[H]
         \centering
         \includegraphics[width=12cm]{images/corridor_roc.png}
         \caption{Courbes ROC - Faculté de génie}
         \label{fig:corridor_roc}
     \end{figure}
+
+    \begin{table}[H]
+        \centering
+        \caption{Temps d'exécution moyen sur Tesla K20 - Faculté de génie}
+        \label{tab:resultat_corridor_temps_execution}
+        \begin{tabular}{lp{4cm}p{4cm}p{4cm}}
+            \midrule
+            Modèle & Temps d'exécution moyen de la passe avant (ms) & Temps d'exécution moyen de la passe arrière (ms) & Temps d'exécution total moyen (ms)\\
+            \midrule\midrule
+            A & 3,08 & 4,22 & 7,30\\
+            B & 3,65 & 5,86 & 9,51\\
+            E & 3,14 & 2,78 & 5,92\\
+            \midrule
+        \end{tabular}
+    \end{table}
+
+\subsection{Analyse générale}
+    
