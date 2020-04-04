@@ -9,3 +9,6 @@
 \contentsline {figure}{\numberline {8}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones convolutif extrayant des caract\IeC {\'e}ristiques}}{9}{figure.8}
 \contentsline {figure}{\numberline {9}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones \IeC {\`a} base de blocs denses extrayant des caract\IeC {\'e}ristiques}}{10}{figure.9}
 \contentsline {figure}{\numberline {10}{\ignorespaces Architecture du r\IeC {\'e}seau de neurones utilisant un \textit {backend} VGG16 pour l'extraction des caract\IeC {\'e}ristiques}}{10}{figure.10}
+\contentsline {figure}{\numberline {11}{\ignorespaces Tableaux de suivi des t\IeC {\^a}ches de chaque volet du projet}}{11}{figure.11}
+\contentsline {figure}{\numberline {12}{\ignorespaces Tableau Trello du volet \textbf {mod\IeC {\`e}les}}}{11}{figure.12}
+\contentsline {figure}{\numberline {13}{\ignorespaces Apper\IeC {\c c}u de l'arborescence du git}}{12}{figure.13}
