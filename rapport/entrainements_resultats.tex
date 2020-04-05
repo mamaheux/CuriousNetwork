@@ -1,7 +1,8 @@
 \section{Entraînement}
-    Il a été décidé de faire l'entraînement des réseaux de neurones sur 10 époques, car l'entraînement doit être rapide dans un contexte d'entraînement en ligne et de génération d'un signal de curiosité utilisé dans un mécanisme d'attention. Une recherche d'hyperparamètres a été effectuée pour trouver la meilleur configuration de chaque modèle.
+    Il a été décidé de faire l'entraînement des réseaux de neurones sur 10 époques, car l'entraînement doit être rapide dans un contexte d'entraînement en ligne et de génération d'un signal de curiosité utilisé dans un mécanisme d'attention. Une recherche d'hyperparamètres a été effectuée pour trouver la meilleur configuration de chaque modèle. Tous les modèles ont été entraînés sur les images d'entraînement pour chaque base de données.
     
 \section{Résultats}
+    Les sous-sections suivantes présentent les résultats obtenus. Les fonctions de coût d'entraînement ne peuvent pas être comparées entre les modèles, car leur plage dynamique n'est pas la même. Cependant, les métriques de validation et de test peuvent être comparées entre les modèles, car elles sont obtenues avec les données de validation et de test respectivement.
 
 \subsection{Courbes d'apprentissage}
     Les courbes d'apprentissage ont été analysées pour s'assurer que l'apprentissage non supervisé permet d'améliorer la métrique de validation au fil de l'entraînement. Les figures \ref{fig:learning_curves_a}, \ref{fig:learning_curves_b}, \ref{fig:learning_curves_c}, \ref{fig:learning_curves_d} et \ref{fig:learning_curves_e} présentent des courbes d'apprentissage typiques pour les modèles A, B, C, D et E respectivement. L'entraînement non supervisé converge pour l'ensemble des modèles parce que les fonctions de coût de l'entraînement diminuent au fil des époques.\\
@@ -44,11 +45,14 @@
     \end{figure}
 
 \subsection{Base de données - Tunnel}
+    Une recherche d'hyperparamètres et des tests ont été effectués pour déterminer les meilleures configurations des modèles et le meilleur modèle sur la base de données tunnel.
 
 \subsubsection{Recherche des hyperparamètres}
+    Le tableau \ref{tab:resultat_tunnel_modele_a} présente les résultats de la recherche d'hyperparamètres pour le modèle A sur la base de données tunnel. Les configurations 5 à 10 donnent des performances sensiblement équivalentes, tandis que les performances des configurations 1 à 4 sont moins bonnes. Ces dernières sont les configurations donnant un modèle avec moins de paramètres. Alors, il est possible de conclure que le modèle doit avoir assez de paramètres pour avoir de bonne performance et que la meilleure configuration est la 8.
+    
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle A - Tunnel}
+        \caption{Résultats de la recherche des hyperparamètres du modèle A - Tunnel}
         \label{tab:resultat_tunnel_modele_a}
         \begin{tabular}{lllp{3cm}p{3cm}l}
             \midrule
@@ -68,9 +72,11 @@
         \end{tabular}
     \end{table}
 
+    Les résultats de la recherche des hyperparamètres du modèle B sont présentés dans le tableau \ref{tab:resultat_tunnel_modele_b}. L'ensemble des configurations donne des résultats semblables, mais la meilleure configuration est la 6.
+
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle B - Tunnel}
+        \caption{Résultats de la recherche des hyperparamètres du modèle B - Tunnel}
         \label{tab:resultat_tunnel_modele_b}
         \begin{tabular}{lllp{3cm}p{3cm}l}
             \midrule
@@ -90,9 +96,11 @@
         \end{tabular}
     \end{table}
 
+    Le tableau \ref{tab:resultat_tunnel_modele_e} permet de constater que l'entraînement du \textit{backend} VGG16 cause une détérioration significative des performances. Ceci est possiblement relié à la détérioration des performances de validation au fil de l'entraînement des modèles C et D. Lorsqu'il y a entraînement du \textit{backend} VGG16, l'extraction des caractéristiques est détériorée, car la méthode d'entraînement ne permet pas l'apprentissage de ceci. La meilleure configuration est la 1.
+
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle E - Tunnel}
+        \caption{Résultats de la recherche des hyperparamètres du modèle E - Tunnel}
         \label{tab:resultat_tunnel_modele_e}
         \begin{tabular}{lp{3cm}p{3cm}p{3cm}l}
             \midrule
@@ -107,6 +115,8 @@
     \end{table}
 
 \subsubsection{Comparaison entre les modèles}
+    Les meilleures configurations des modèles A, B et E ont été testé sur les images de test de à base de données tunnel. Les courbes ROC présentées à la figure \ref{fig:tunnel_roc} ont été obtenues à partir de ces tests. Une autre métrique de comparaison intéressante pour comparer les différents modèles est le temps d'exécution. Le tableau \ref{tab:resultat_tunnel_temps_execution} présente les temps d'exécution moyens pour la passe avant, la passe arrière et total pour chacun des modèles sur une carte Tesla K20. À partir de ces informations, il est possible de conclure que le meilleur modèle pour cette base de données est le E parce que l'aire sous la courbe ROC est la plus grande et que son temps d'exécution est le moins élevé. À partir de ces résultats, il est possible d'invalider l'hypothèse énoncée par rapport à l'auto-encodeur variationnel (modèle B). Le fait de contraindre la sortie de l'encodeur détériore les performances que ce soit pour la courbe ROC ou pour le temps d'exécution.
+    
     \begin{figure}[H]
         \centering
         \includegraphics[width=8cm]{images/tunnel_roc.png}
@@ -116,7 +126,7 @@
 
     \begin{table}[H]
         \centering
-        \caption{Temps d'exécution moyen sur Tesla K20 - Tunnel}
+        \caption{Temps d'exécution moyens sur Tesla K20 - Tunnel}
         \label{tab:resultat_tunnel_temps_execution}
         \begin{tabular}{lp{4cm}p{4cm}p{4cm}}
             \midrule
@@ -134,7 +144,7 @@
 \subsubsection{Recherche des hyperparamètres}
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle A - Faculté de génie}
+        \caption{Résultats de la recherche des hyperparamètres du modèle A - Faculté de génie}
         \label{tab:resultat_corridor_modele_a}
         \begin{tabular}{lllp{3cm}p{3cm}l}
             \midrule
@@ -156,7 +166,7 @@
     
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle B - Faculté de génie}
+        \caption{Résultats de la recherche des hyperparamètres du modèle B - Faculté de génie}
         \label{tab:resultat_corridor_modele_b}
         \begin{tabular}{lllp{3cm}p{3cm}l}
             \midrule
@@ -178,7 +188,7 @@
     
     \begin{table}[H]
         \centering
-        \caption{Résultat de la recherche des hyperparamètres du modèle E - Faculté de génie}
+        \caption{Résultats de la recherche des hyperparamètres du modèle E - Faculté de génie}
         \label{tab:resultat_corridor_modele_e}
         \begin{tabular}{lp{3cm}p{3cm}p{3cm}l}
             \midrule
@@ -202,7 +212,7 @@
 
     \begin{table}[H]
         \centering
-        \caption{Temps d'exécution moyen sur Tesla K20 - Faculté de génie}
+        \caption{Temps d'exécution moyens sur Tesla K20 - Faculté de génie}
         \label{tab:resultat_corridor_temps_execution}
         \begin{tabular}{lp{4cm}p{4cm}p{4cm}}
             \midrule
