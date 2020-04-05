@@ -1,36 +1,35 @@
-# Common parameters
-use_gpu = True
-train_path = ''
-val_path = ''
-test_path = ''
-output_path = '~/CuriousNetwork_out'
-model_name = ''
+# Project Curious Network
+# This script generates bash commands destined to be used on calcul Canada for the class IFT-725
 
+# Common variables
+output_path = '~/CuriousNetwork_out'
 model_types = ['cnn_autoencoder', 'cnn_vae', 'small_cnn', 'small_cnn_dense_blocks', 'vgg16_backend_autoencoder']
 datasets = ["tunnel", "corridor"]
 
+# Common hyper-parameters
 batch_size = 20
 data_augmentation = [0, 1]
 learning_rate = 0.001
 epoch_count = 20
 weight_decay = 0
 
-# CNN autoencoder & CNN vanilla
+# CNN autoencoder & CNN vanilla hyper-parameters
 starting_feature_map = [2, 4, 8]
 growth_factor = [2, 3]
 kernel_size = 3
 
-# VGG16 backend
+# VGG16 backend hyper-parameters
 train_back_end = [0, 1]
 
-# CNN autoencoder & CNN vanilla
+# CNN autoencoder & CNN vanilla hyper-parameters
 small_cnn_starting_feature_map = [2, 4, 8]
 small_cnn_growth_factor = [2, 4]
 small_cnn_kernel_size = 3
 
-# small cnn dense blocks
+# small cnn dense blocks hyper-parameters
 dense_blocks_growth_rates = [2, 4, 8, 16, 32]
 
+# Loop through all the models and the relevant hyper-parameters to generate the appropriate bash command
 for dataset in datasets:
     for model_type in model_types:
         if model_type == 'cnn_autoencoder':

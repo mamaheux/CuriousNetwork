@@ -1,3 +1,6 @@
+# Project Curious Network
+# This class implements the video player tool that allows the annotations validation
+
 from PySide2.QtCore import Qt, QTimer
 from PySide2.QtGui import QKeySequence
 from PySide2.QtWidgets import QWidget, QPushButton, QLineEdit, QVBoxLayout, QHBoxLayout, QFileDialog, QLabel

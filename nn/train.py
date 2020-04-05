@@ -1,3 +1,6 @@
+# Project Curious Network
+# Training script
+
 import argparse
 import os
 import numpy as np
@@ -17,6 +20,8 @@ from metrics.model_execution_time import ModelExecutionTime
 from models import create_model
 
 def main():
+
+    # Specify which flags are supported by the script
     parser = argparse.ArgumentParser(description='Train Curious Network')
     parser.add_argument('--use_gpu', action='store_true')
     parser.add_argument('--train_path', type=str, help='Choose the training database path', required=True)
@@ -35,33 +40,33 @@ def main():
     parser.add_argument('--epoch_count', type=int, help='Choose the epoch count', required=True)
     parser.add_argument('--weight_decay', type=float, help='Choose the weight decay', required=True)
 
-    # cnn_autoencoder arguments
+    # cnn_autoencoder flags
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_autoencoder_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'
                                        'maps are goind to be multiplied from a layer to the next', default=2)
     parser.add_argument('--cnn_autoencoder_kernel_size', type=int, help='Choose the starting kernel size', default=3)
 
-    # cnn_vae arguments
+    # cnn_vae flags
     parser.add_argument('--cnn_vae_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_vae_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'
                                        'maps are goind to be multiplied from a layer to the next', default=2)
     parser.add_argument('--cnn_vae_kernel_size', type=int, help='Choose the starting kernel size', default=3)
 
-    # vgg16_backend_autoencoder arguments
+    # vgg16_backend_autoencoder flags
     parser.add_argument('--vgg16_backend_autoencoder_train_backend', action='store_true', help='Train the backend')
 
-    # small_cnn arguments
+    # small_cnn flags
     parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)
     parser.add_argument('--small_cnn_first_output_channels', type=int, help='Set the value for small_cnn', default=8)
     parser.add_argument('--small_cnn_growth_rate', type=int, help='Set the value for small_cnn', default=2)
 
-    # small_cnn_dense_blocks arguments
+    # small_cnn_dense_blocks flags
     parser.add_argument('--small_cnn_dense_blocks_kernel_size', type=int,
                         help='Set the value for small_cnn_dense_blocks', default=3)
     parser.add_argument('--small_cnn_dense_blocks_growth_rate', type=int,
@@ -72,6 +77,9 @@ def main():
 
 
 def train(args):
+
+    # Allows to fetch the VGG16 back-end locally since no internet connexion is
+    # available on the calculation machines of Calcul Canada
     os.environ['TORCH_HOME'] = 'models'
     model, normalization, roc_curve_thresholds = create_model(args.type, args)
 
