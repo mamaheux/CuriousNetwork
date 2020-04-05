@@ -39,7 +39,7 @@
     \end{figure}
 
 \subsubsection{Auto-encodeur variationnel à base de couche convolutive appliqué sur l'image}
-    Il a été décidé de développer un auto-encodeur variationnel dans le but de vérifier si le fait de contraindre la sortie de l'encodeur permet d'améliorer les performances. Par conséquent, l'architecture de l'auto-encodeur variationnel présenté à la figure \ref{fig:architecture_cnn_vae} est très semblable à celle du modèle A. Les seules différences concernent la sortie de l'encodeur et l'entrée du décodeur. La sortie de l'encodeur correspond à une distribution de probabilité normale multidimensionnelle où la matrice de covariance est une diagonale. L'entrée du décodeur est un point échantillonné la cette distribution de probabilité. Ce réseau de neurones sera appelé modèle B dans la suite du document.
+    Il a été décidé de développer un auto-encodeur variationnel dans le but de vérifier si le fait de contraindre la sortie de l'encodeur permet d'améliorer les performances. Par conséquent, l'architecture de l'auto-encodeur variationnel présenté à la figure \ref{fig:architecture_cnn_vae} est très semblable à celle du modèle A. Les seules différences concernent la sortie de l'encodeur et l'entrée du décodeur. La sortie de l'encodeur correspond à une distribution de probabilité normale multidimensionnelle où la matrice de covariance est une diagonale. L'entrée du décodeur est un point échantillonné la cette distribution de probabilité. Pour ce réseau de neurones, la fonction de coût pour l'entraînement contient la divergence de Kullback-Leibler comme terme supplémentaire dans le but de contraindre \(\boldsymbol{\mu}\) et \(\boldsymbol{\sigma}\) pour que ces paramètres représentent une distribution de probabilité normale. Ce réseau de neurones sera appelé modèle B dans la suite du document.
     \begin{figure}[H]
         \centering
         \includegraphics[width=17cm]{images/Architecture_CnnVae.png}
@@ -57,6 +57,7 @@
     \end{figure}
 
 \subsubsection{Réseau de neurones à base de blocs denses extrayant des caractéristiques}
+    La figure \ref{fig:architecture_small_cnn_dense_bloc} présente un réseau de neurones faisant l'extraction de caractéristiques à l'aide de blocs denses. L'architecture de ce réseau est la même que pour le réseau d'extraction de caractéristiques du modèle C, sauf que les couches convolutives ont été remplacées par des blocs denses (\(N_C = 2\) et  \(t = N_D\)). Il est possible de configurer le réseau à l'aide de \(N_D\) qui définit le taux de grossissement des blocs denses. La combinaison de ce réseau de neurones et de l'auto-encodeur des caractéristiques sera appelée modèle D dans la suite du document.
     \begin{figure}[H]
         \centering
         \includegraphics[width=17cm]{images/Architecture_SmallCnnWithAutoencoderDenseBlocks.png}
@@ -65,7 +66,7 @@
     \end{figure}
 
 \subsection{Réseau de neurones utilisant un \textit{backend} VGG16 pour l'extraction des caractéristiques}
-    La sortie du réseau de neurones utilisant un \textit{backend} VGG16 présenté à la figure \ref{fig:architecture_vgg16} est envoyée à l'entrée de l'auto-encodeur des caractéristiques (figure \ref{fig:architecture_autoencoder_caracteristique}) pour que la sortie de l'auto-encodeur des caractéristiques soit les erreurs de reconstruction des régions. Les 8 premières couches de VGG16, suivi d'un \textit{MaxPool} 8x8 a été utilisé pour obtenir le bon champ récepteur. Il y a l'utilisation d'une \textit{BatchNorm} et d'une interpolation bilinéaire pour les mêmes raisons que le modèle C. La combinaison de ces deux réseaux de neurones sera appelée modèle E dans la suite du document.
+    La sortie du réseau de neurones utilisant un \textit{backend} VGG16 pré-entraîné présenté à la figure \ref{fig:architecture_vgg16} est envoyée à l'entrée de l'auto-encodeur des caractéristiques (figure \ref{fig:architecture_autoencoder_caracteristique}) pour que la sortie de l'auto-encodeur des caractéristiques soit les erreurs de reconstruction des régions. Les 8 premières couches de VGG16, suivi d'un \textit{MaxPool} 8x8 a été utilisé pour obtenir le bon champ récepteur. Il y a l'utilisation d'une \textit{BatchNorm} et d'une interpolation bilinéaire pour les mêmes raisons que le modèle C. La combinaison de ces deux réseaux de neurones sera appelée modèle E dans la suite du document.
     \begin{figure}[H]
         \centering
         \includegraphics[width=15cm]{images/Architecture_Vgg16BackendAutoencoder.png}
