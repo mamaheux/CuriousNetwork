@@ -1,6 +1,6 @@
 import argparse
 import os
-
+import shutil
 import numpy as np
 
 import torch
@@ -57,10 +57,11 @@ def run(args):
 
     os.makedirs(args.output_path, exist_ok=True)
 
+    model.load_state_dict(torch.load(args.weight_path, map_location=torch.device('cpu')))
+
     if torch.cuda.is_available() and args.use_gpu:
         model = model.cuda()
 
-    model.load_state_dict(torch.load(args.weight_path))
     model.eval()
 
     for idx, (image, _) in enumerate(dataset):
@@ -75,6 +76,9 @@ def run(args):
             error = model(image.unsqueeze(0)).detach().numpy()
         error = np.sqrt(error)
         predicted_roi = error > args.threshold
+
+        jpeg_file = os.path.join(args.input_path, dataset.get_filename(idx))
+        shutil.copy(jpeg_file, args.output_path)
 
         output_file = os.path.join(args.output_path, str.replace(dataset.get_filename(idx), '.jpg', '.txt'))
         np.savetxt(output_file, predicted_roi[0], delimiter=',', fmt='%f')
