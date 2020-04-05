@@ -141,6 +141,7 @@ rapport/*.nlo
 rapport/*.out
 rapport/*.pdf
 rapport/*.lof
+rapport/*.lot
 rapport/*.toc
 rapport/*.bib
 rapport/*.bst
