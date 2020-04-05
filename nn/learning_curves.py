@@ -22,14 +22,14 @@ class LearningCurves:
 
         epochs = range(1, len(self._training_loss_values) + 1)
         ax1.plot(epochs, self._training_loss_values, '-o')
-        ax1.set_title('Training loss')
-        ax1.set_xlabel('Epochs')
-        ax1.set_ylabel('Loss')
+        ax1.set_title(u'Entraînement')
+        ax1.set_xlabel(u'Époque')
+        ax1.set_ylabel(u'Coût')
 
         epochs = range(1, len(self._validation_loss_values) + 1)
         ax2.plot(epochs, self._validation_loss_values, '-o', color='tab:orange')
-        ax2.set_title('Validation loss')
-        ax2.set_xlabel('Epochs')
-        ax2.set_ylabel('Loss')
+        ax2.set_title(u'Validation')
+        ax2.set_xlabel(u'Époque')
+        ax2.set_ylabel(u'Coût')
 
         fig.savefig(output_path)
