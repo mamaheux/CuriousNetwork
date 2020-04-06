@@ -1,3 +1,6 @@
+# Project Curious Network
+# This script convert mp4 video frames to jpeg files
+
 import os
 import imageio
 

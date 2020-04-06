@@ -1,3 +1,6 @@
+# Project Curious Network
+# This is the main entry point for the player tool
+
 import sys
 
 from PySide2.QtWidgets import QApplication

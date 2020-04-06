@@ -1,12 +1,12 @@
+# Project Curious Network
+# this script fetch a pre-trained model and run series of "classifications" on the sections of the image, trying to
+# detect new elements in the environment. The results can then be used to quantify the model's performance
+
 import argparse
 import os
 import shutil
 import numpy as np
-
 import torch
-from torch.autograd import Variable
-
-from barbar import Bar
 
 from models import create_model
 from curious_dataset import CuriousDataset
@@ -24,7 +24,7 @@ def main():
 
     # cnn_autoencoder arguments
     parser.add_argument('--cnn_autoencoder_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_autoencoder_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'
@@ -33,7 +33,7 @@ def main():
 
     # cnn_vae arguments
     parser.add_argument('--cnn_vae_starting_feature_map',
-                        type=int, help='Choose the number of starting feature maps for the auto encoder',
+                        type=int, help='Choose the number of starting feature maps for the autoencoder',
                         default=4)
     parser.add_argument('--cnn_vae_growth_factor',
                         type=int, help='Choose the basis of the coefficient by which the feature'
