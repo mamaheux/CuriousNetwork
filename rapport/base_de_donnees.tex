@@ -1,0 +1,36 @@
+\section{Création de la base de données}
+    Afin d'entraîner les réseaux de neurones, deux bases de données ont été générées à partir de segments vidéo Full HD prises dans différents couloirs de l’Université de Sherbrooke: des couloirs où les murs sont vierges de toutes affiches, images ou autres fresques, et des couloirs où on retrouve des éléments hétéroclites qui devraient susciter la curiosité du robot lorsqu’il les verra pour la première fois.\\
+    
+    La première base de données a été créée à partir de segments vidéo des tunnels de l'Université de Sherbrooke. Le contenu des images pour l'entraînement correspond aux sections des tunnels n'ayant pas de fresque, tandis que le contenu des images de validation et de test correspond aux sections des tunnels ayant des fresques sur les murs. À l'aide de segments vidéo des quatrième et cinquième étages de la faculté de génie de l'Université de Sherbrooke, il a été possible de créer la deuxième base de données. Les images du quatrième étage sont utilisées pour l'entraînement, car il y a moins d'éléments sur les murs, tandis que les images du cinquième étage sont utilisées pour la validation et les tests. La deuxième base de données est jugée plus difficile, car il y a beaucoup de différence entre les images d'entraînement et celles de validation et de test.\\
+    
+    À fin de pouvoir comparer les différents réseaux développer à l'aide de métriques, il a été nécessaire de développer un outil permettant d'annoter les images de validation et de test. La figure \ref{fig:outil_annotation} présente l'interface d'annotation et la figure \ref{fig:outil_lecture} présente celle de lecture. Le code de ces deux interfaces graphiques se trouve dans le dossier \texttt{tools/labeling}. La méthode d'annotation se résume à indiquer les régions de l'image qui sont différentes des images d'entraînement. Dans les deux interfaces, les régions jugées comme différentes sont indiquées par des carrés rouges. Ceci était fait pour chacune des images de validation et de test. Puisque la méthode de détermination des régions différentes est plutôt subjective, il est fort probable qu'il y ait plusieurs erreurs d'annotation.
+    
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=15cm]{images/outil_annotation.png}
+        \caption{Outil d'annotation des images}
+        \label{fig:outil_annotation}
+    \end{figure}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=15cm]{images/outil_lecture.png}
+        \caption{Outil de lecture des images avec l'annotation}
+        \label{fig:outil_lecture}
+    \end{figure}
+
+    Le tableau \ref{tab:nb_image_bd} présente le nombre d'images d'entraînement, de validation et de test pour chaque base de données. Puisque l'annotation des images est une tâche longue et fastidieuse et ne fait pas partie du cadre du cours, il a été décidé d'annoter environ 1 000 images par base de données. Ce nombre a été jugé comme suffisant pour avoir une bonne idée de la performance des réseaux sans toutefois rendre l'annotation trop longue. Il a été préféré de mettre plus d'images en test qu'en validation pour nous permettre d'avoir de bonnes métriques de test. De plus, les images de validation et de test sont semblables, mais n'ont pas le même contenu dans le but de ne pas fausser nos résultats de tests suite à un surentraînement des hyperparamètres sur les images. 
+    
+    \begin{table}[H]
+        \centering
+        \caption{Nombre d'images pour chaque base de données}
+        \label{tab:nb_image_bd}
+        \begin{tabular}{p{4cm}p{3cm}p{2.25cm}p{2.25cm}}
+            \midrule
+            Base de données &  Nombre d'images d'entraînement & Nombre d'images de validation & Nombre d'images de test\\
+            \midrule\midrule
+            Tunnel & 24 526 & 300 & 815\\
+            Faculté de génie & 21 079 & 200 & 691\\
+            \midrule
+        \end{tabular}
+    \end{table}

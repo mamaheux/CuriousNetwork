@@ -1,0 +1,27 @@
+\section{Gestion de projet}
+L'outils de contrôle de versions retenu pour le projet est un Git hébergé par Microsoft (\href{https://github.com/mamaheux/CuriousNetwork}{https://github.com/mamaheux/CuriousNetwork}). Les tableaux de type Trello de GitHub a également été utilisé pour gérer l'assignation et le suivi des tâches de développement. Un tableau a été créé pour chaque volet majeur du projet:
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=15cm]{images/3_sub_projects.png}
+        \caption{Tableaux de suivi des tâches de chaque volet du projet}
+        \label{fig:trello_boards}
+    \end{figure}
+
+Voici un apperçu du tableau de suivi pour le volet des modèles de réseaux de neurones.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=15cm]{images/trello_board.png}
+        \caption{Tableau Trello du volet \textbf{modèles}}
+        \label{fig:trello_boards}
+    \end{figure}
+
+Tel que le veux les bonnes pratiques, chaque tâches de développement a été effectuée sur sa propre branche. Une fois la tâche complétée, la branche faisait l'objet d'une demande \textit{pull request} et devait être révisée par un autre membre de l'équipe avant de pouvoir être fusionnée (\textit{merge}) à la branch principale \textit{master}. Une fois les branches fusionnée elles étaient supprimées.
+
+Les \textit{commits} ont été effectués de manière à avoir la plus grande granularité possible de manière à simplifier les révisions de codes ainsi que la traçabilité. Il a été décidé de ne pas utiliser de \textit{sqaush and merge} afin de conserver l'historique de l'évolution du code pour chaque fusion. Voici un apperçu de l'arborescence git du projet.
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=15cm]{images/git_graph.png}
+        \caption{Apperçu de l'arborescence du git}
+        \label{fig:git_graph}
+    \end{figure}

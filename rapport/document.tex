@@ -1,0 +1,158 @@
+% !TeX spellcheck = fr_CA
+\documentclass[letterpaper, 12pt]{article}
+
+% Encoding
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+% Margins
+\usepackage[top=2.5cm, bottom=2.5cm, left=2.5cm, right=2.5cm]{geometry}
+% One half spacing
+\usepackage{setspace}
+\onehalfspacing
+% Paragraph indentation
+\setlength{\parindent}{0cm}
+% Page numbering to the right
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancypagestyle{plain}{\pagestyle{fancy}}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot[R]{\thepage}
+\renewcommand{\headrulewidth}{0cm}
+\renewcommand{\footrulewidth}{0cm}
+% Footnotes
+\usepackage[bottom]{footmisc}
+
+% Abstract
+\usepackage{abstract}
+% Table of contents, list of figures and tables
+\usepackage{tocloft}
+\usepackage[notindex, nottoc, notlof, notlot]{tocbibind}
+% List of abbreviations
+\usepackage{nomencl}
+\makenomenclature
+% Appendices
+\usepackage[title, titletoc]{appendix}
+% Bibliography
+\usepackage[numbers]{natbib}
+\usepackage{url}
+\def\UrlBreaks{\do\/\do-}
+
+% Figures
+\usepackage{float, graphicx}
+% Tables
+\usepackage{booktabs, longtable, fonttable}
+% SI units
+\usepackage[squaren, Gray]{SIunits}
+% Mathematics
+\usepackage{amsmath, amssymb, mathrsfs}
+% Drawings
+\usepackage{tikz}
+% Hypertext
+\usepackage[colorlinks=false, pdfborder={0 0 0}]{hyperref}
+
+% Document in french
+\usepackage[french]{babel}
+
+\usepackage{listings}
+\usepackage{pdflscape}
+
+% Matrice augmenté
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+    \hskip -\arraycolsep
+    \let\@ifnextchar\new@ifnextchar
+    \array{#1}}
+\makeatother
+
+\newcommand{\matr}[1]{\mathbf{#1}}
+
+\begin{document}
+    % Title page
+    \begin{titlepage}
+        \begin{center}
+            \begin{large}
+                \textbf{FACULTÉ DES SCIENCES} \\
+                \textbf{DÉPARTEMENT D'INFORMATIQUE}
+            \end{large}
+            \vfill
+            \begin{Large}
+                \textbf{IFT725 - Réseaux neuronaux} \\
+                Projet - \textit{Curious Network}
+            \end{Large}
+            \vfill
+            \textit{préparé par} \\
+            \begin{tabular}{ccc}
+                \textbf{Gabriel Gibeau Sanchez (gibg2501)} \\
+                \textbf{Marc-Antoine Maheux (mahm1904)} \\
+                \textbf{Aurélien Vauthier (vaua2803)}
+            \end{tabular}
+            \vfill
+            \textit{présenté à} \\
+            \textbf{Pierre-Marc Jodoin} \\
+            \vfill
+            11 avril 2020
+        \end{center}
+    \end{titlepage}
+    \pagebreak
+    
+    \pagenumbering{roman}
+    
+    % Table of contents
+    \tableofcontents
+    \pagebreak
+    
+    % List of figures
+    %\renewcommand{\listfigurename}{Liste des figures}
+    \renewcommand{\figurename}{Figure}
+    \renewcommand{\cftfigpresnum}{Figure }
+    \renewcommand{\cftfignumwidth}{2cm}
+    \listoffigures
+    \pagebreak
+%    
+%    % List of tables
+    \renewcommand{\tablename}{Tableau}
+    \renewcommand{\cfttabpresnum}{Tableau }
+    \renewcommand{\cfttabnumwidth}{2cm}
+    \listoftables
+    \pagebreak
+    
+    % List of abbreviations
+    %\renewcommand{\nomname}{Liste des symboles et abréviations}
+    %\renewcommand{\nomlabel}[1]{\hfil #1 \hfil}
+    %\printnomenclature
+    %\pagebreak
+    
+    \pagenumbering{arabic}
+    \input{mise_en_contexte}
+    \input{base_de_donnees}
+    \input{conception}
+    \input{entrainements_resultats}
+    \input{gestion_de_projet}
+    \input{conclusion}
+    
+    \pagebreak
+    \section{Listes des références}
+    [1]     Ferland, F., Létourneau, D., Aumont, A., Frémy, J, Legault, M.-A., Lauria, M., Michaud,         F. (2012), "Natural interaction design of a humanoid robot," Journal of Human-Robot         Interaction, 1 (2), 118-134.\\
+    
+    [2]    Michaud, F., Ferland, F., Létourneau, D., Legault, M.-A., Lauria, M. (2010), “Toward         autonomous, compliant, omnidirectional humanoid robots for natural interaction in real         life settings,” Paladyn Behavioral Robotic Journal, 1(1): 57-65.\\
+    
+    [3]    Michaud, F., Côté, C., Létourneau, D., Brosseau, Y., Valin, J.-M., Beaudry, É.,             Raïevsky, C., Ponchon, Moisan, P., Lepage, P., Morin, Y., Gagnon, F., Giguère, P.,             Roux, M.-A., Caron, S., Frenette, P., Kabanza, F. (2007), “Spartacus attending the             2005 AAAI Conference,” to be published in Autonomous Robots, Special Issue on the         AAAI Mobile Robot Competitions and Exhibition.\\
+    
+    [4]    D. Pathak, P. Agrawal, A. A. Efros, et T. Darrell, “Curiosity-driven Exploration by             Self-supervised Prediction,” arXiv:1705.05363, mai 2017.\\\\
+    
+    % Appendices
+    %\renewcommand{\appendixname}{Annexe}
+    %\begin{appendices}
+    %    \input{annexea}
+        
+    %\end{appendices}
+    \pagebreak
+    
+    % Bibliography
+    \singlespacing
+    \renewcommand{\refname}{Bibliographie}
+    \bibliographystyle{IEEEtranN}
+    %\bibliography{biblio}
+    
+\end{document}
