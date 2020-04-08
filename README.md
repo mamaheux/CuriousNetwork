@@ -5,7 +5,11 @@ before, thus triggering "curiosity" in the model, and eventually allowing a robo
 its attention on such new elements of its environment. It runs on python 3.
 
 ## Database
-TBD
+The database for thir project is composed of images from a tunnel and a corridor from the Université de Sherbrooke. In the training set, the walls are free
+from any elements, and in the test set the walls have different types of elements on them, which should generate a decoding error, and thus a "curiosity" signal. The dataset can be downloaded using the following command:
+```bash
+source get_dataset.sh
+```
 
 ## Annotation tool
 [Video to pictures converter](tools/dataset_mp4_to_jpg)
