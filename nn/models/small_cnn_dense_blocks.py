@@ -1,7 +1,9 @@
 import torch
+import torch.nn.functional as F
 
 from models.base_model import BaseModel
 from models.cnn_blocks import DenseBlock
+import curious_dataset
 
 
 class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
@@ -14,17 +16,17 @@ class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
             DenseBlock(2, 3, growth_rate),
 
             DenseBlock(2, 3 + growth_rate * 2, growth_rate),
-            torch.nn.MaxPool2d(5, stride=5),
+            torch.nn.MaxPool2d(2, stride=2),
 
             DenseBlock(2, 3 + growth_rate * 4, growth_rate),
 
             DenseBlock(2, 3 + growth_rate * 6, growth_rate),
-            torch.nn.MaxPool2d(3, stride=3),
+            torch.nn.MaxPool2d(2, stride=2),
 
             DenseBlock(2, 3 + growth_rate * 8, growth_rate),
 
             DenseBlock(2, 3 + growth_rate * 10, growth_rate),
-            torch.nn.MaxPool2d(2, stride=2),
+            torch.nn.MaxPool2d(8, stride=8),
             torch.nn.BatchNorm2d(3 + growth_rate * 12)
         )
 
@@ -52,6 +54,7 @@ class SmallCnnWithAutoencoderDenseBlocks(BaseModel):
 
     def forward(self, input):
         features = self._cnn(input)
+        features = F.interpolate(features, size=curious_dataset.LABEL_SIZE, mode='bilinear')
 
         x = self._encoder(features)
         x = self._decoder(x)
