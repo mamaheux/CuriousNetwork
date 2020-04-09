@@ -10,7 +10,7 @@ datasets = ["tunnel", "corridor"]
 batch_size = 20
 data_augmentation = [0, 1]
 learning_rate = 0.001
-epoch_count = 20
+epoch_count = 10
 weight_decay = 0
 
 # CNN autoencoder & CNN vanilla hyper-parameters
@@ -29,9 +29,13 @@ small_cnn_kernel_size = 3
 # small cnn dense blocks hyper-parameters
 dense_blocks_growth_rates = [2, 4, 8, 16, 32]
 
+file = open('start.sh', mode='w')
+file.write('#!/bin/bash\n')
+
 # Loop through all the models and the relevant hyper-parameters to generate the appropriate bash command
 for dataset in datasets:
     for model_type in model_types:
+        file.write('\n\n')
         if model_type == 'cnn_autoencoder':
             for da in data_augmentation:
                 for fm in starting_feature_map:
@@ -50,7 +54,7 @@ for dataset in datasets:
                                    f'--cnn_autoencoder_starting_feature_map {fm} '\
                                    f'--cnn_autoencoder_growth_factor {gf} '\
                                    f'--cnn_autoencoder_kernel_size {3}'
-                        print(call_str)
+                        file.write(call_str + '\n')
         if model_type == 'cnn_vae':
             for da in data_augmentation:
                 for fm in starting_feature_map:
@@ -69,7 +73,7 @@ for dataset in datasets:
                                    f'--cnn_vae_starting_feature_map {fm} ' \
                                    f'--cnn_vae_growth_factor {gf} ' \
                                    f'--cnn_vae_kernel_size {3}'
-                        print(call_str)
+                        file.write(call_str + '\n')
         if model_type == 'vgg16_backend_autoencoder':
             for da in data_augmentation:
                 for tb in train_back_end:
@@ -86,7 +90,7 @@ for dataset in datasets:
                                f'--learning_rate {learning_rate} ' \
                                f'--epoch_count {epoch_count} ' \
                                f'--weight_decay {weight_decay}'
-                    print(call_str)
+                    file.write(call_str + '\n')
         if model_type == 'small_cnn':
             for da in data_augmentation:
                 for fm in small_cnn_starting_feature_map:
@@ -106,7 +110,7 @@ for dataset in datasets:
                                    f'--small_cnn_kernel_size {3} ' \
                                    f'--small_cnn_first_output_channels {fm} ' \
                                    f'--small_cnn_growth_rate {gf}'
-                        print(call_str)
+                        file.write(call_str + '\n')
         if model_type == 'small_cnn_dense_blocks':
             for da in data_augmentation:
                 for gr in dense_blocks_growth_rates:
@@ -123,4 +127,4 @@ for dataset in datasets:
                                f'--weight_decay {weight_decay} ' \
                                f'--small_cnn_dense_blocks_kernel_size {3} ' \
                                f'--small_cnn_dense_blocks_growth_rate {gr}'
-                    print(call_str)
+                    file.write(call_str + '\n')
