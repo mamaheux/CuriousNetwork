@@ -5,7 +5,7 @@
     Plusieurs réseaux de neurones ont été conçus pour déterminer le meilleur type de réseau à utiliser dans ce contexte. Certains sont des auto-encodeurs travaillant sur les pixels directement et d'autres ont un réseau de neurones pour l'extraction de caractéristiques, suivi d'un auto-encodeur travaillant sur les caractéristiques extraites.
 
 \subsection{Choix des métriques}
-    L'entraînement se fait de façon non supervisé, il a donc été décidé d'utiliser l'équation suivante comme fonction de coût d'entraînement du réseau. À l'aide de celle-ci, les réseaux de neurones apprennent à reconstruire les régions des images d'entraînement (pixels ou caractéristiques).
+    L'entraînement se fait de façon non supervisée, donc il a été décidé d'utiliser l'équation suivante comme fonction de coût d'entraînement du réseau. À l'aide de celle-ci, les réseaux de neurones apprennent à reconstruire les régions des images d'entraînement (pixels ou caractéristiques).
     
     \begin{equation}
         L = \sum_{i,j} \mathbf{S}_{i,j} \text{, où } \mathbf{S} \text{ est la matrice de sortie du réseau de neurones}
