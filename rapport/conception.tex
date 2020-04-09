@@ -29,7 +29,7 @@
         \label{fig:architecture_autoencoder_caracteristique}
     \end{figure}
 
-\subsubsection{Auto-encodeur à base de couche convolutive appliqué sur l'image}
+\subsubsection{Auto-encodeur à base de couches convolutives appliqué sur l'image}
     Un réseau de neurones de type auto-encodeur reconstruisant l'image en entrée a été conçu. L'architecture de ce réseau est présentée à la figure \ref{fig:architecture_cnn_autoencoder}. Le réseau est configurable à l'aide de \(N_A\) et de \(N_B\). \(N_A\) permet de choisir le nombre de canaux après la première convolution de l'encodeur, tandis que \(N_B\) permet de choisir le taux de grossissement du nombre de canaux après chaque convolution de l'encodeur. Le décodeur est symétrique par rapport à l'encodeur. À la sortie du décodeur, il y a une interpolation bilinéaire, car il n'était pas possible de respecter en même temps le champ récepteur et le fait que l'image en entrée et celle en sortie aient la même taille parce que certains \textit{MaxPool} ne donnent pas une sortie de type \textit{same}. Alors, la solution la plus simple était d'utiliser une interpolation bilinéaire. La dernière fonction d'activation du décodeur est la fonction sigmoïde parce que les valeurs des pixels d'une image sont entre 0 et 1. La sortie du réseau de neurones est l'erreur quadratique moyenne de la reconstruction de chaque région. Ce réseau de neurones sera appelé modèle A dans la suite du document.
     \begin{figure}
         \centering
@@ -38,8 +38,8 @@
         \label{fig:architecture_cnn_autoencoder}
     \end{figure}
 
-\subsubsection{Auto-encodeur variationnel à base de couche convolutive appliqué sur l'image}
-    Il a été décidé de développer un auto-encodeur variationnel dans le but de vérifier si le fait de contraindre la sortie de l'encodeur permet d'améliorer les performances. Par conséquent, l'architecture de l'auto-encodeur variationnel présenté à la figure \ref{fig:architecture_cnn_vae} est très semblable à celle du modèle A. Les seules différences concernent la sortie de l'encodeur et l'entrée du décodeur. La sortie de l'encodeur correspond à une distribution de probabilité normale multidimensionnelle où la matrice de covariance est une diagonale. L'entrée du décodeur est un point échantillonné de cette distribution de probabilité. Pour ce réseau de neurones, la fonction de coût pour l'entraînement contient la divergence de Kullback-Leibler comme terme supplémentaire dans le but de contraindre \(\boldsymbol{\mu}\) et \(\boldsymbol{\sigma}\) pour que ces paramètres représentent une distribution de probabilité normale. Ce réseau de neurones sera appelé modèle B dans la suite du document.
+\subsubsection{Auto-encodeur variationnel à base de couches convolutives appliqué sur l'image}
+    Il a été décidé de développer un auto-encodeur variationnel dans le but de vérifier si le fait de contraindre la sortie de l'encodeur permet d'améliorer les performances. Par conséquent, l'architecture de l'auto-encodeur variationnel présentée à la figure \ref{fig:architecture_cnn_vae} est très semblable à celle du modèle A. Les seules différences concernent la sortie de l'encodeur et l'entrée du décodeur. La sortie de l'encodeur correspond à une distribution de probabilité normale multidimensionnelle où la matrice de covariance est une diagonale. L'entrée du décodeur est un point échantillonné de cette distribution de probabilité. Pour ce réseau de neurones, la fonction de coût pour l'entraînement contient la divergence de Kullback-Leibler comme terme supplémentaire dans le but de contraindre \(\boldsymbol{\mu}\) et \(\boldsymbol{\sigma}\) pour que ces paramètres représentent une distribution de probabilité normale. Ce réseau de neurones sera appelé modèle B dans la suite du document.
     \begin{figure}
         \centering
         \includegraphics[width=17cm]{images/Architecture_CnnVae.png}
