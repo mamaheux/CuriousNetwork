@@ -3,19 +3,25 @@
 #SBATCH --cpus-per-task=2
 #SBATCH --time=0-24:00:00  # DD-HH:MM:SS
 
+
+SLURM_TMPDIR='./output'
+
+if [ ! -d "$SLURM_TMPDIR" ]
+then
+  mkdir $SLURM_TMPDIR
+fi
+
 # Setup venv
 cd $SLURM_TMPDIR
-module load python/3.6 cuda cudnn
 virtualenv --no-download env
-source env/bin/activate
-pip install --no-index -r ~/CuriousNetwork_fixes/requirements.txt
-pip install --no-index torch_gpu
+source ~/.venv_ift725/bin/activate
+pip install --no-index -r ~/repos/CuriousNetwork_fixes/requirements.txt
 
 # Copy code and data
 cd $SLURM_TMPDIR
-cp -r ~/CuriousNetwork/nn/ .
+cp -r ~/repos/CuriousNetwork/nn/ .
 cd nn/
-cp ~/CuriousNetwork/dataset.tar .
+cp ~/repos/CuriousNetwork/dataset.tar .
 tar -xf dataset.tar
 cp ~/CuriousNetwork_fixes/barbar.py .
 

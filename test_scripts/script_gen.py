@@ -10,7 +10,7 @@ datasets = ["tunnel", "corridor"]
 batch_size = 20
 data_augmentation = [0, 1]
 learning_rate = 0.001
-epoch_count = 10
+epoch_count = 1
 weight_decay = 0
 
 # CNN autoencoder & CNN vanilla hyper-parameters
@@ -40,8 +40,7 @@ for dataset in datasets:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh ' \
-                                   f'--use_gpu ' \
+                        call_str = f'source train_{dataset}.sh ' \
                                    f'--output_path ' \
                                        f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
                                        f'growth_factor_{gf}/data_augmentation_{da}/ '\
@@ -59,8 +58,7 @@ for dataset in datasets:
             for da in data_augmentation:
                 for fm in starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh ' \
-                                   f'--use_gpu ' \
+                        call_str = f'source train_{dataset}.sh ' \
                                    f'--output_path ' \
                                        f'{output_path}/{dataset}/{model_type}/start_feature_maps_{fm}/' \
                                        f'growth_factor_{gf}/data_augmentation_{da}/ ' \
@@ -77,8 +75,7 @@ for dataset in datasets:
         if model_type == 'vgg16_backend_autoencoder':
             for da in data_augmentation:
                 for tb in train_back_end:
-                    call_str = f'sbatch train_{dataset}.sh ' \
-                               f'--use_gpu ' \
+                    call_str = f'source train_{dataset}.sh ' \
                                f'--output_path ' \
                                    f'{output_path}/{dataset}/{model_type}/train_back_end_{tb}/' \
                                    f'data_augmentation_{da}/ ' \
@@ -95,8 +92,7 @@ for dataset in datasets:
             for da in data_augmentation:
                 for fm in small_cnn_starting_feature_map:
                     for gf in growth_factor:
-                        call_str = f'sbatch train_{dataset}.sh ' \
-                                   f'--use_gpu ' \
+                        call_str = f'source train_{dataset}.sh ' \
                                    f'--output_path ' \
                                        f'{output_path}/{dataset}/{model_type}/' \
                                        f'first_output_channels_{fm}/growth_rate_{gf}/data_augmentation_{da}/ ' \
@@ -114,8 +110,7 @@ for dataset in datasets:
         if model_type == 'small_cnn_dense_blocks':
             for da in data_augmentation:
                 for gr in dense_blocks_growth_rates:
-                    call_str = f'sbatch train_{dataset}.sh ' \
-                               f'--use_gpu ' \
+                    call_str = f'source train_{dataset}.sh ' \
                                f'--output_path ' \
                                f'{output_path}/{dataset}/{model_type}/growth_rate_{gr}/data_augmentation_{da}/ ' \
                                f'--name n ' \

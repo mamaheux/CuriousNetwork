@@ -21,7 +21,8 @@ class CuriousDataset(Dataset):
         self._normalization = normalization
 
     def __len__(self):
-        return len(self._images)
+        # return len(self._images)
+        return 5
 
     def __getitem__(self, index):
         image = self._get_image(index)
