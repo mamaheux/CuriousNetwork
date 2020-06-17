@@ -31,7 +31,7 @@ def main():
     parser.add_argument('-n', '--name', type=str, help='Choose the model name', required=True)
 
     parser.add_argument('-t', '--type',
-                        choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'small_cnn',
+                        choices=['cnn_autoencoder', 'cnn_vae', 'vgg16_backend_autoencoder', 'mnasnet_backend_autoencoder', 'small_cnn',
                                  'small_cnn_dense_blocks'],
                         help='Choose the network type', required=True)
     parser.add_argument('-s', '--batch_size', type=int, help='Set the batch size for the training', default=20)
@@ -60,6 +60,9 @@ def main():
 
     # vgg16_backend_autoencoder flags
     parser.add_argument('--vgg16_backend_autoencoder_train_backend', action='store_true', help='Train the backend')
+
+    # mnasnet_backend_autoencoder flags
+    parser.add_argument('--mnasnet_backend_autoencoder_train_backend', action='store_true', help='Train the backend')
 
     # small_cnn flags
     parser.add_argument('--small_cnn_kernel_size', type=int, help='Set the value for small_cnn', default=3)

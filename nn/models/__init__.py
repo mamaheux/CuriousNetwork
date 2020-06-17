@@ -5,6 +5,7 @@ import torchvision.transforms as transforms
 from models.cnn_autoencoder import CnnAutoencoder
 from models.cnn_vae import CnnVae
 from models.vgg16_backend_autoencoder import Vgg16BackendAutoencoder
+from models.mnasnet_backend_autoencoder import MnasnetBackendAutoencoder
 from models.small_cnn import SmallCnnWithAutoencoder
 from models.small_cnn_dense_blocks import SmallCnnWithAutoencoderDenseBlocks
 
@@ -31,6 +32,12 @@ def create_model(type, hyperparameters):
     elif type == 'vgg16_backend_autoencoder':
         roc_curve_thresholds = np.linspace(0, 10, num=10000)
         return Vgg16BackendAutoencoder(train_backend=hyperparameters.vgg16_backend_autoencoder_train_backend), \
+               transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), \
+               roc_curve_thresholds
+
+    elif type == 'mnasnet_backend_autoencoder':
+        roc_curve_thresholds = np.linspace(0, 10, num=10000)
+        return MnasnetBackendAutoencoder(train_backend=hyperparameters.mnasnet_backend_autoencoder_train_backend), \
                transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]), \
                roc_curve_thresholds
 
